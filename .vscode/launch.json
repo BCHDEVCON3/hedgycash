@@ -10,14 +10,6 @@
       "runtimeArgs": ["run-script", "start"]
     },
     {
-      "name": "Watch Oracle",
-      "type": "node",
-      "request": "launch",
-      "cwd": "${workspaceRoot}/oracle",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "watch"]
-    },
-    {
       "name": "Debug Oracle",
       "type": "node",
       "request": "launch",

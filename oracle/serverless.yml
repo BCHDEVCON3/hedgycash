@@ -6,15 +6,24 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
+  environment:
+    MONGO_URL: ${file(./env.${self:provider.stage}.json):MONGO_URL}
 
 plugins:
   - serverless-offline
 
 functions:
   createOracle:
-    handler: ./src/index.handler.hello
+    handler: ./src/oracles/oracles.handler.create
     events:
       - http:
-          path: api/rest/hello
+          path: api/rest/oracles
+          method: post
+          cors: true
+  listOracles:
+    handler: ./src/oracles/oracles.handler.list
+    events:
+      - http:
+          path: api/rest/oracles
           method: get
           cors: true
