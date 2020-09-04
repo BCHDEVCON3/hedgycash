@@ -1,0 +1,7 @@
+{
+  "name": "pitico-front",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
