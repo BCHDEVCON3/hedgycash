@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "pitico-front",
+  "appName": "hedgycash-front",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",

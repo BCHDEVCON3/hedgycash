@@ -46,7 +46,7 @@ const Menu = ({ history, location }: Props) => {
         <IonMenu contentId="main">
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Pitico</IonTitle>
+                    <IonTitle>Hedgy.Cash</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent id="main">
