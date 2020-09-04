@@ -27,3 +27,26 @@ functions:
           path: api/rest/oracles
           method: get
           cors: true
+  runOracle:
+    handler: ./src/oracles/oracles.handler.run
+    events:
+      - http:
+          path: api/rest/oracles/pubKey/{pubKey}/run
+          method: get
+          cors: true
+  findOracleByPubKey:
+    handler: ./src/oracles/oracles.handler.findByPubKey
+    events:
+      - http:
+          path: api/rest/oracles/pubKey/{pubKey}
+          method: get
+          cors: true
+  testCode:
+    handler: ./src/oracles/oracles.handler.testCode
+    events:
+      - http:
+          path: api/rest/oracles/testCode
+          method: post
+          cors: true
+  publishPrice:
+    handler: ./src/oracles/oracles.handler.publishPrice

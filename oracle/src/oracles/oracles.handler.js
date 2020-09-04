@@ -41,3 +41,73 @@ module.exports.list = createHandler((event, context, callback) => {
       })
     );
 });
+
+module.exports.run = createHandler((event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  oraclesService
+    .run(event.pathParameters.pubKey)
+    .then((oracle) => {
+      callback(null, { statusCode: 200, body: JSON.stringify(oracle) });
+    })
+    .catch((err) =>
+      callback(null, {
+        statusCode: err.statusCode || 500,
+        body: JSON.stringify(err),
+      })
+    );
+});
+
+module.exports.findByPubKey = createHandler((event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  oraclesService
+    .findByPubKey(event.pathParameters.pubKey)
+    .then((oracle) => {
+      if (oracle) {
+        callback(null, { statusCode: 200, body: JSON.stringify(oracle) });
+      } else {
+        callback(null, {
+          statusCode: 404,
+        });
+      }
+    })
+    .catch((err) =>
+      callback(null, {
+        statusCode: err.statusCode || 500,
+        body: JSON.stringify(err),
+      })
+    );
+});
+
+module.exports.testCode = createHandler((event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  oraclesService
+    .testCode(event.body)
+    .then((result) =>
+      callback(null, { statusCode: 200, body: JSON.stringify(result) })
+    )
+    .catch((err) =>
+      callback(null, {
+        statusCode: err.statusCode || 500,
+        body: JSON.stringify(err.stack || err.message),
+      })
+    );
+});
+
+module.exports.publishPrice = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  oraclesService
+    .publishPrice(event)
+    .then((result) =>
+      callback(null, { statusCode: 200, body: JSON.stringify(result) })
+    )
+    .catch((err) =>
+      callback(null, {
+        statusCode: err.statusCode || 500,
+        body: JSON.stringify(err.stack || err.message),
+      })
+    );
+};
