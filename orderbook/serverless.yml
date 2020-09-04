@@ -1,0 +1,20 @@
+org: thr0wn
+app: ora-cash-server
+service: ora-cash-server
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+
+plugins:
+  - serverless-offline
+
+functions:
+  createOracle:
+    handler: ./src/index.handler.hello
+    events:
+      - http:
+          path: api/rest/hello
+          method: get
+          cors: true
