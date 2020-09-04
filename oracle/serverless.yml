@@ -1,6 +1,6 @@
 org: thr0wn
-app: ora-cash-server
-service: ora-cash-server
+app: hedgy-cash-oracle
+service: hedgy-cash-oracle
 
 provider:
   name: aws
