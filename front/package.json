@@ -50,23 +50,6 @@
   },
   "devDependencies": {
     "@capacitor/cli": "2.4.0",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.3.0",
-    "prettier": "^2.1.1",
-    "pretty-quick": "^3.0.0",
     "redux-devtools-extension": "^2.13.8"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "pretty-quick — staged"
-    ],
-    "src/**/*.{css}": [
-      "pretty-quick — staged"
-    ]
   }
 }
