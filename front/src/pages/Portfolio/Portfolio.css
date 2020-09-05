@@ -5,3 +5,8 @@ ion-card-content {
 ion-col#portfolioCol {
     padding: 50px;
 }
+
+ion-toast#portfolio-empty-toast {
+    --width: 300px;
+    text-align: center;
+}

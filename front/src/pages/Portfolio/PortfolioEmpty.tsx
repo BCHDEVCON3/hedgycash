@@ -62,6 +62,7 @@ const PortfolioEmpty: React.FC = () => {
                 </IonCard>
             </IonCol>
             <IonToast
+                id="portfolio-empty-toast"
                 isOpen={error}
                 onDidDismiss={() => dispatch(setError(false))}
                 color="danger"
