@@ -11,7 +11,7 @@ import {
     IonToast,
     IonCol,
 } from '@ionic/react';
-import { archive } from 'ionicons/icons';
+import { archive, addCircle } from 'ionicons/icons';
 
 import { RootState } from '../../store';
 
@@ -23,9 +23,29 @@ const PortfolioEmpty: React.FC = () => {
     const dispatch = useDispatch();
     const { error } = useSelector((state: RootState) => state.walletState);
 
+    const createWallet = () => {
+        console.log('Create Wallet');
+    };
+
     return (
         <IonRow>
-            <IonCol id="portfolioCol" offsetLg="3" sizeLg="6">
+            <IonCol id="portfolioCol" sizeLg="6">
+                <IonCard>
+                    <IonItem>
+                        <IonIcon icon={addCircle} slot="start" />
+                        <IonLabel>New Wallet</IonLabel>
+                    </IonItem>
+                    <IonCardContent>
+                        <IonItem>
+                            <IonLabel>Badger Wallet</IonLabel>
+                            <IonButton fill="outline" onClick={createWallet}>
+                                Create
+                            </IonButton>
+                        </IonItem>
+                    </IonCardContent>
+                </IonCard>
+            </IonCol>
+            <IonCol id="portfolioCol" size="6">
                 <IonCard>
                     <IonItem>
                         <IonIcon icon={archive} slot="start" />
