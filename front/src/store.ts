@@ -8,6 +8,8 @@ const rootReducer: Reducer<any, Action<any>> = combineReducers({
     walletState: walletReducer,
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
+
 let composedEnhancers: any = [];
 
 const persistStateSlicer = () => (state: any) => ({
