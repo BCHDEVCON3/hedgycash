@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     IonCard,
     IonCardContent,
@@ -8,6 +8,7 @@ import {
     IonRow,
     IonCol,
     IonChip,
+    IonToast,
 } from '@ionic/react';
 import { cash, copy, send } from 'ionicons/icons';
 
@@ -19,6 +20,8 @@ interface PortfolioDetailsInterface {
 }
 
 const PortfolioDetails: React.FC<PortfolioDetailsInterface> = ({ address }) => {
+    const [copyMsg, setCopyMsg] = useState(false);
+
     const handleCopy = () => {
         const input = document.createElement('input');
         input.setAttribute('value', address);
@@ -26,6 +29,7 @@ const PortfolioDetails: React.FC<PortfolioDetailsInterface> = ({ address }) => {
         input.select();
         document.execCommand('copy');
         document.body.removeChild(input);
+        setCopyMsg(true);
     };
 
     return (
@@ -46,6 +50,14 @@ const PortfolioDetails: React.FC<PortfolioDetailsInterface> = ({ address }) => {
                     </IonCardContent>
                 </IonCard>
             </IonCol>
+            <IonToast
+                id="portfolio-details-toast"
+                isOpen={copyMsg}
+                onDidDismiss={() => setCopyMsg(false)}
+                color="light"
+                message="Copied"
+                duration={2000}
+            />
         </IonRow>
     );
 };
