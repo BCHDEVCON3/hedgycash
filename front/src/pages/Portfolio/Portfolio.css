@@ -1,7 +1,12 @@
-ion-card-content {
+ion-card-content#portfolio-card-content {
     height: 200px;
 }
 
 ion-col#portfolioCol {
     padding: 50px;
+}
+
+ion-toast#portfolio-empty-toast {
+    --width: 300px;
+    text-align: center;
 }

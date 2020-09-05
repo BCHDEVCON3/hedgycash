@@ -10,7 +10,8 @@ import {
     IonChip,
     IonToast,
 } from '@ionic/react';
-import { cash, copy, send } from 'ionicons/icons';
+import { cash, copy } from 'ionicons/icons';
+import RawQRCode from 'qrcode.react';
 
 import './Portfolio.css';
 import './PortfolioDetails.css';
@@ -40,9 +41,15 @@ const PortfolioDetails: React.FC<PortfolioDetailsInterface> = ({ address }) => {
                         <IonIcon icon={cash} slot="start" />
                         <IonLabel>Wallet Details</IonLabel>
                     </IonItem>
-                    <IonCardContent>
-                        <IonIcon id="portfolio-details-send" icon={send} slot="start" />
-                        <IonLabel>Send</IonLabel>
+                    <IonCardContent id="portfolio-details-card-content">
+                        <RawQRCode
+                            className="portfolio-details__qr-code"
+                            value={address || ''}
+                            size={210}
+                            renderAs={'svg'}
+                            includeMargin
+                            onClick={handleCopy}
+                        />
                         <IonChip onClick={handleCopy}>
                             <IonLabel>{address}</IonLabel>
                             <IonIcon icon={copy} />
