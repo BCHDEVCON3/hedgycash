@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     IonContent,
     IonHeader,
@@ -19,7 +19,6 @@ import {
 } from '@ionic/react';
 
 import './Order.css';
-import { on } from 'process';
 
 const Order: React.FC = () => {
 
