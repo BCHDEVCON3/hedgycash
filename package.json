@@ -1,0 +1,35 @@
+{
+  "name": "hedgycash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BCHDEVCON3/hedgycash.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BCHDEVCON3/hedgycash/issues"
+  },
+  "homepage": "https://github.com/BCHDEVCON3/hedgycash#readme",
+  "dependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.3.0",
+    "prettier": "^2.1.1",
+    "pretty-quick": "^3.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "front/src/**/*.{js,jsx,ts,tsx}": [
+      "pretty-quick — staged"
+    ],
+    "front/src/**/*.{css}": [
+      "pretty-quick — staged"
+    ]
+  }
+}

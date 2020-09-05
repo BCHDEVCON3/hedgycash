@@ -6,6 +6,8 @@ import { IonReactRouter } from '@ionic/react-router';
 import Menu from './components/Menu/Menu';
 import { PAGES } from './constants/constants';
 
+import './App.css';
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 

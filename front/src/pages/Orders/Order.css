@@ -1,0 +1,31 @@
+ion-card#orderCard {
+    height: 300px;
+    max-width: 500px;
+    margin-top: 100px;
+}
+
+ion-row {
+    max-height: 120px;
+}
+
+#submitOrder {
+    text-transform: none;
+}
+
+#orderCardContent {
+    padding-top: 30px;
+}
+
+#orderCardTitle {
+    text-align: center;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
