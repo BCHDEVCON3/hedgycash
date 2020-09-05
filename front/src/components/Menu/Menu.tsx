@@ -9,6 +9,7 @@ import {
     IonMenuToggle,
     IonLabel,
     IonItem,
+    IonButton,
 } from '@ionic/react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -22,6 +23,7 @@ const Menu = ({ history, location }: Props) => {
     useEffect(() => {
         const selectedPage = PAGES.find((page) => page.path === location.pathname);
         if (selectedPage) {
+            console.log("Navegou")
             setActivePage(selectedPage.title);
         }
     }, [location.pathname]);
@@ -29,18 +31,22 @@ const Menu = ({ history, location }: Props) => {
     const renderMenuItems = (): JSX.Element[] => {
         return PAGES.map((page: Page) => (
             <IonMenuToggle key={page.title} auto-hide="false">
-                <IonItem
-                    button
-                    color={page.title === activePage ? 'primary' : ''}
-                    onClick={() => navigateToPage(page)}
-                >
-                    <IonLabel>{page.title}</IonLabel>
+                <IonItem color={page.title === activePage ? 'primary' : ''}>
+                    <IonButton
+                        fill="clear"
+                        expand="full"
+                        onClick={() => navigateToPage(page)}>
+                            <IonLabel color="dark">{page.title}</IonLabel>
+                    </IonButton>  
                 </IonItem>
             </IonMenuToggle>
         ));
     };
 
-    const navigateToPage = (page: Page) => history.push(page.path);
+    const navigateToPage = (page: Page) => {
+        console.log("Clickou")
+        history.push(page.path)
+    };
 
     return (
         <IonMenu contentId="main">
