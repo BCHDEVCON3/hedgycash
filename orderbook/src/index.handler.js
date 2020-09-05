@@ -11,3 +11,8 @@ module.exports.createContract = createHandler((event, context, callback) => {
 module.exports.fundContract = createHandler((event, context, callback) => {
   callback(null, { statusCode: 200, body: "Hello!" });
 });
+
+module.exports.listOrders = createHandler((event, context, callback) => {
+  callback(null, { statusCode: 200, body: "Hello!" });
+});
+
