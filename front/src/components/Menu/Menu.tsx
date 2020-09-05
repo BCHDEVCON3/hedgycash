@@ -23,7 +23,6 @@ const Menu = ({ history, location }: Props) => {
     useEffect(() => {
         const selectedPage = PAGES.find((page) => page.path === location.pathname);
         if (selectedPage) {
-            console.log("Navegou")
             setActivePage(selectedPage.title);
         }
     }, [location.pathname]);
@@ -44,7 +43,6 @@ const Menu = ({ history, location }: Props) => {
     };
 
     const navigateToPage = (page: Page) => {
-        console.log("Clickou")
         history.push(page.path)
     };
 
