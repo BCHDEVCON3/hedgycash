@@ -39,7 +39,7 @@ const PortfolioDetails: React.FC<PortfolioDetailsInterface> = ({ address }) => {
                     <IonCardContent>
                         <IonIcon id="portfolio-details-send" icon={send} slot="start" />
                         <IonLabel>Send</IonLabel>
-                        <IonChip id="portfolio-details-chip" onClick={handleCopy}>
+                        <IonChip onClick={handleCopy}>
                             <IonLabel>{address}</IonLabel>
                             <IonIcon icon={copy} />
                         </IonChip>
