@@ -2,6 +2,7 @@ import Home from '../pages/Home';
 import Portfolio from '../pages/Portfolio/Portfolio';
 import Book from '../pages/Book';
 import User from '../pages/User';
+import Order from '../pages/Orders/Order';
 
 export interface Page {
     title: string;
@@ -14,4 +15,5 @@ export const PAGES: Page[] = [
     { title: 'Portfolio', path: '/portfolio', component: Portfolio },
     { title: 'Book', path: '/book', component: Book },
     { title: 'User', path: '/user', component: User },
+    { title: 'Order', path: '/order', component: Order },
 ];

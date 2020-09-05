@@ -2,6 +2,6 @@ ion-card-content {
     height: 200px;
 }
 
-ion-col {
+ion-col#portfolioCol {
     padding: 50px;
 }
