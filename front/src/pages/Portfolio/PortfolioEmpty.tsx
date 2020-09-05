@@ -35,7 +35,7 @@ const PortfolioEmpty: React.FC = () => {
                         <IonIcon icon={addCircle} slot="start" />
                         <IonLabel>New Wallet</IonLabel>
                     </IonItem>
-                    <IonCardContent>
+                    <IonCardContent id="portfolio-card-content">
                         <IonItem>
                             <IonLabel>Badger Wallet</IonLabel>
                             <IonButton fill="outline" onClick={createWallet}>
@@ -51,7 +51,7 @@ const PortfolioEmpty: React.FC = () => {
                         <IonIcon icon={archive} slot="start" />
                         <IonLabel>Import Wallet</IonLabel>
                     </IonItem>
-                    <IonCardContent>
+                    <IonCardContent id="portfolio-card-content">
                         <IonItem>
                             <IonLabel>Badger Wallet</IonLabel>
                             <IonButton fill="outline" onClick={() => dispatch(getAddressInit())}>
