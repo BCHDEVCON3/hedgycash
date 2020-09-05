@@ -1,6 +1,8 @@
 import React from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
+import PortfolioEmpty from './PortfolioEmpty';
+
 const Portfolio: React.FC = () => {
     return (
         <IonPage>
@@ -9,12 +11,8 @@ const Portfolio: React.FC = () => {
                     <IonTitle>Portfolio</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent fullscreen>
-                <IonHeader collapse="condense">
-                    <IonToolbar>
-                        <IonTitle size="large">Portfolio</IonTitle>
-                    </IonToolbar>
-                </IonHeader>
+            <IonContent>
+                <PortfolioEmpty />
             </IonContent>
         </IonPage>
     );

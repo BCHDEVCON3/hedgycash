@@ -1,5 +1,5 @@
 import Home from '../pages/Home';
-import Portfolio from '../pages/Portfolio';
+import Portfolio from '../pages/Portfolio/Portfolio';
 import Book from '../pages/Book';
 import User from '../pages/User';
 
