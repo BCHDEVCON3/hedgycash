@@ -3,6 +3,14 @@
 }
 
 ion-toast#portfolio-details-toast {
-    --width	: 75px;
+    --width: 75px;
     text-align: center;
+}
+
+#portfolio-details-card-content {
+    text-align: center;
+}
+
+.portfolio-details__qr-code {
+    cursor: pointer;
 }
