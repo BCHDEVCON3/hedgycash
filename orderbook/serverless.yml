@@ -1,6 +1,6 @@
 org: thr0wn
-app: ora-cash-server
-service: ora-cash-server
+app: hedgy-cash-orders
+service: hedgy-cash-orders
 
 provider:
   name: aws
@@ -12,9 +12,9 @@ plugins:
 
 functions:
   createOracle:
-    handler: ./src/index.handler.hello
+    handler: ./src/orders/orders.handler.create
     events:
       - http:
-          path: api/rest/hello
-          method: get
+          path: api/rest/orders
+          method: post
           cors: true

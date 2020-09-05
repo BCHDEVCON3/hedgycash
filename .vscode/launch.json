@@ -16,6 +16,22 @@
       "cwd": "${workspaceRoot}/oracle",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "debug"]
+    },
+    {
+      "name": "Start Orderbook",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}/orderbook",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start"]
+    },
+    {
+      "name": "Debug Orderbook",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}/orderbook",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "debug"]
     }
   ]
 }

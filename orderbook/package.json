@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx serverless offline -s dev",
-    "watch": "npx nodemon --exec 'serverless offline -s dev' --watch src",
-    "debug": "npx --node-arg=inspect serverless offline -s dev"
+    "start": "node ./node_modules/.bin/serverless offline -s dev",
+    "debug": "export SLS_DEBUG=* && node inspect ./node_modules/.bin/serverless offline -s dev --printOut",
+    "deploy": "node ./node_modules/.bin/serverless deploy"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,11 @@
   "dependencies": {
     "@middy/core": "^1.2.0",
     "@middy/http-cors": "^1.2.0",
-    "@middy/http-error-handler": "^1.3.1"
+    "@middy/http-error-handler": "^1.3.1",
+    "bitbox-sdk": "^8.11.2",
+    "bitcore-payment-protocol": "^8.1.1",
+    "mongoose": "^5.10.3",
+    "validator": "^13.1.1"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +29,7 @@
   },
   "homepage": "https://github.com/thr0wn/pitico.oracle#readme",
   "devDependencies": {
+    "serverless": "^1.79.0",
     "serverless-offline": "^6.7.0"
   }
 }
