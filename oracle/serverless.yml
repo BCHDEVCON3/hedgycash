@@ -8,6 +8,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     MONGO_URL: ${file(./env.${self:provider.stage}.json):MONGO_URL}
+    STAGE: ${self:provider.stage}
+    PUSH_ON_CHAIN: ${file(./env.${self:provider.stage}.json):PUSH_ON_CHAIN}
+    FULLSTACK_CASH_TOKEN:  ${file(./env.${self:provider.stage}.json):FULLSTACK_CASH_TOKEN}
 
 plugins:
   - serverless-offline
@@ -50,3 +53,7 @@ functions:
           cors: true
   publishPrice:
     handler: ./src/oracles/oracles.handler.publishPrice
+  watch:
+    handler: ./src/watcher/watcher.handler.watch
+    events:
+      - schedule: rate(1 minute)

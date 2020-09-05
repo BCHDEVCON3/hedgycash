@@ -1,13 +1,11 @@
 const validator = require("validator");
 const axios = require("axios");
 const vm = require("vm");
-const BITBOX = require("bitbox-sdk").BITBOX;
+const bitbox = require("../config/bitbox");
 const bitcore = require("bitcore-lib-cash");
 const { OracleData } = require("@generalprotocols/price-oracle");
 const Oracle = require("./oracles.repository");
 const pushPriceOnChain = require("./utils/push-price-chain");
-
-const bitbox = new BITBOX();
 
 const MIN_ORACLE_BALANCE = 0.001;
 

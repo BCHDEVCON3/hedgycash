@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const BITBOX = require("bitbox-sdk").BITBOX;
-
-const bitbox = new BITBOX();
+const bitbox = require("../config/bitbox");
 
 const OracleState = {
   CREATED: "CREATED",
