@@ -70,7 +70,7 @@ const Order: React.FC = () => {
                                         <IonInput onIonChange={onBCHInputChanged} id="bleblelbleb" type="number" inputMode="decimal" placeholder="0.0" />
                                     </IonCol>
                                     <IonCol size="6">
-                                        <IonText>Select Order Type:</IonText>
+                                        <IonText><h2>Select Order Type:</h2></IonText>
                                         <IonSelect interface="popover" value={orderType} onIonChange={e => setOrderType(e.detail.value)}>
                                             <IonSelectOption value="Hedge">Hedge</IonSelectOption>
                                             <IonSelectOption value="Short">Short</IonSelectOption>
@@ -79,11 +79,11 @@ const Order: React.FC = () => {
                                 </IonRow>
                                 <IonRow>
                                     <IonCol size="6">
-                                        <IonText>Value in {asset}:</IonText>
+                                        <IonText><h2>Value in {asset}:</h2></IonText>
                                         <IonInput onIonChange={onAssetInputChanged} type="number" inputMode="decimal" placeholder="0.0" />
                                     </IonCol>
                                     <IonCol size="6">
-                                        <IonText>Select Asset:</IonText>
+                                        <IonText><h2>Select Asset:</h2></IonText>
                                         <IonSelect interface="popover" value={asset} onIonChange={e => setAsset(e.detail.value)}>
                                             <IonSelectOption value="USD">USD</IonSelectOption>
                                             <IonSelectOption value="ETH">ETH</IonSelectOption>
