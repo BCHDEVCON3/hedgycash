@@ -45,7 +45,7 @@ const PortfolioEmpty: React.FC = () => {
                     </IonCardContent>
                 </IonCard>
             </IonCol>
-            <IonCol id="portfolioCol" size="6">
+            <IonCol id="portfolioCol" sizeLg="6">
                 <IonCard>
                     <IonItem>
                         <IonIcon icon={archive} slot="start" />
