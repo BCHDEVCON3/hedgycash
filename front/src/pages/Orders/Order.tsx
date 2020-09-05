@@ -58,7 +58,7 @@ const Order: React.FC = () => {
             </IonHeader>
             <IonContent fullscreen>
                 <IonRow>
-                    <IonCol offset="4" size="4">
+                    <IonCol offsetLg="4" sizeLg="4">
                         <IonCard id="orderCard">
                             <IonCardHeader>
                                 <IonCardTitle id="orderCardTitle">Choose your Order</IonCardTitle>
