@@ -1,0 +1,8 @@
+#portfolio-details-send {
+    margin-right: 5px;
+}
+
+ion-toast#portfolio-details-toast {
+    --width	: 75px;
+    text-align: center;
+}

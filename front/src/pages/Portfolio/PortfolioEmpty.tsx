@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     IonCard,
     IonCardContent,
@@ -7,30 +8,44 @@ import {
     IonLabel,
     IonButton,
     IonRow,
-    IonInput,
+    IonToast,
     IonCol,
 } from '@ionic/react';
-import { addCircle, archive } from 'ionicons/icons';
+import { archive, addCircle } from 'ionicons/icons';
+
+import { RootState } from '../../store';
+
+import { getAddressInit, setError } from '../../Redux/Wallet';
 
 import './Portfolio.css';
 
 const PortfolioEmpty: React.FC = () => {
-    const [text] = useState<string>();
+    const dispatch = useDispatch();
+    const { error } = useSelector((state: RootState) => state.walletState);
+
+    const createWallet = () => {
+        console.log('Create Wallet');
+    };
 
     return (
         <IonRow>
-            <IonCol>
+            <IonCol id="portfolioCol" sizeLg="6">
                 <IonCard>
                     <IonItem>
                         <IonIcon icon={addCircle} slot="start" />
                         <IonLabel>New Wallet</IonLabel>
                     </IonItem>
                     <IonCardContent>
-                        <IonButton fill="outline">New Wallet</IonButton>
+                        <IonItem>
+                            <IonLabel>Badger Wallet</IonLabel>
+                            <IonButton fill="outline" onClick={createWallet}>
+                                Create
+                            </IonButton>
+                        </IonItem>
                     </IonCardContent>
                 </IonCard>
             </IonCol>
-            <IonCol>
+            <IonCol id="portfolioCol" sizeLg="6">
                 <IonCard>
                     <IonItem>
                         <IonIcon icon={archive} slot="start" />
@@ -38,13 +53,21 @@ const PortfolioEmpty: React.FC = () => {
                     </IonItem>
                     <IonCardContent>
                         <IonItem>
-                            <IonLabel position="floating">mnemonic (seed phrase)</IonLabel>
-                            <IonInput value={text}></IonInput>
+                            <IonLabel>Badger Wallet</IonLabel>
+                            <IonButton fill="outline" onClick={() => dispatch(getAddressInit())}>
+                                Import
+                            </IonButton>
                         </IonItem>
-                        <IonButton fill="outline">Import</IonButton>
                     </IonCardContent>
                 </IonCard>
             </IonCol>
+            <IonToast
+                isOpen={error}
+                onDidDismiss={() => dispatch(setError(false))}
+                color="danger"
+                message="Badger Wallet not installed or configured!"
+                duration={5000}
+            />
         </IonRow>
     );
 };

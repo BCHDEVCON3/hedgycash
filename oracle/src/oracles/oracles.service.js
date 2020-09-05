@@ -39,8 +39,8 @@ class OraclesService {
     return Oracle.find();
   };
 
-  run = async (pubKey) => {
-    const oracle = await this.findByPubKey(pubKey);
+  run = async (rawOracle) => {
+    const oracle = await this.findById(rawOracle._id);
 
     if (oracle.state !== Oracle.OracleState.CREATED) {
       return Promise.reject({
