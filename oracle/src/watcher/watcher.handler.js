@@ -9,5 +9,10 @@ module.exports.watch = (event, context, callback) => {
   watcherService
     .watch()
     .then(() => callback(null))
-    .catch(callback);
+    .catch((error) => {
+      if (!process.env.IS_OFFLINE) {
+        callback(error);
+      }
+      callback();
+    });
 };

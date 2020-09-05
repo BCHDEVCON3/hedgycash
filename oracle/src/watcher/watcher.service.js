@@ -1,7 +1,9 @@
-const bitbox = require("../config/bitbox");
+const BITBOX = require("bitbox-sdk").BITBOX;
 const aws = require("aws-sdk");
 const Watcher = require("./watcher.repository");
 const Oracles = require("../oracles/oracles.repository");
+
+const bitbox = new BITBOX();
 
 class WatcherService {
   watch = async () => {
@@ -57,7 +59,7 @@ class WatcherService {
 
       lambda.invoke(opts, (err) => {
         if (err) {
-          console.error(err.stack, err.message);
+          console.error(err);
         }
       });
     }

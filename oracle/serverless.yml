@@ -6,6 +6,12 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+        - lambda:InvokeAsync
+      Resource: "*"
   environment:
     MONGO_URL: ${file(./env.${self:provider.stage}.json):MONGO_URL}
     STAGE: ${self:provider.stage}
@@ -34,8 +40,8 @@ functions:
     handler: ./src/oracles/oracles.handler.run
     events:
       - http:
-          path: api/rest/oracles/pubKey/{pubKey}/run
-          method: get
+          path: api/rest/oracles/run
+          method: post
           cors: true
   findOracleByPubKey:
     handler: ./src/oracles/oracles.handler.findByPubKey
@@ -56,4 +62,4 @@ functions:
   watch:
     handler: ./src/watcher/watcher.handler.watch
     events:
-      - schedule: rate(1 minute)
+      - schedule: rate(5 minutes)

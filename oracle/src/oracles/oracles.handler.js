@@ -46,7 +46,7 @@ module.exports.run = createHandler((event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   oraclesService
-    .run(event.pathParameters.pubKey)
+    .run(rawOracle)
     .then((oracle) => {
       callback(null, { statusCode: 200, body: JSON.stringify(oracle) });
     })

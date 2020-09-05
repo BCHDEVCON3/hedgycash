@@ -1,11 +1,13 @@
 const validator = require("validator");
 const axios = require("axios");
 const vm = require("vm");
-const bitbox = require("../config/bitbox");
+const BITBOX = require("bitbox-sdk").BITBOX;
 const bitcore = require("bitcore-lib-cash");
 const { OracleData } = require("@generalprotocols/price-oracle");
 const Oracle = require("./oracles.repository");
 const pushPriceOnChain = require("./utils/push-price-chain");
+
+const bitbox = new BITBOX();
 
 const MIN_ORACLE_BALANCE = 0.001;
 
@@ -37,8 +39,8 @@ class OraclesService {
     return Oracle.find();
   };
 
-  run = async (pubKey) => {
-    const oracle = await this.findByPubKey(pubKey);
+  run = async (rawOracle) => {
+    const oracle = await this.findById(rawOracle._id);
 
     if (oracle.state !== Oracle.OracleState.CREATED) {
       return Promise.reject({

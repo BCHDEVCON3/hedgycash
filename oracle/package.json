@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./node_modules/.bin/serverless offline -s dev",
-    "debug": "node inspect ./node_modules/.bin/serverless offline -s dev --printOut"
+    "debug": "export SLS_DEBUG=* && node inspect ./node_modules/.bin/serverless offline -s dev --printOut"
   },
   "dependencies": {
     "@generalprotocols/price-oracle": "^1.3.6",

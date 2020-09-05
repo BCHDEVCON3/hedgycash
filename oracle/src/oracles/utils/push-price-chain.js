@@ -1,7 +1,8 @@
 const Big = require("big.js");
-const bitbox = require("../../config/bitbox");
+const { BITBOX } = require("bitbox-sdk");
 const { OracleData } = require("@generalprotocols/price-oracle");
-const bitcore = require("bitcore-lib-cash");
+
+const bitbox = new BITBOX();
 
 const DUST = 546;
 const SATOSHIS_PER_BYTE = 1.01;
@@ -15,9 +16,9 @@ const ERRORS = {
 
 const pushPriceOnChain = async ({ oracleWif, signature, priceMessage }) => {
   try {
-    const pk = bitcore.PrivateKey.fromWIF(oracleWif);
-    const oraclePubKey = pk.toPublicKey().toBuffer();
-    const oracleAddress = pk.toAddress().toString();
+    const ecpair = bitbox.ECPair.fromWIF(oracleWif);
+    const oracleAddress = bitbox.ECPair.toCashAddress(ecpair);
+    const oraclePubKey = bitbox.ECPair.toPublicKey(ecpair);
 
     const encodedOpReturn = Buffer.concat(
       OracleData.packPriceMessage(priceMessage, signature, oraclePubKey)
