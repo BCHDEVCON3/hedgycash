@@ -16,6 +16,8 @@ import {
     IonText,
     IonSelectOption,
     IonCardHeader,
+    IonButtons,
+    IonMenuButton,
 } from '@ionic/react';
 
 import './Order.css';
@@ -53,12 +55,17 @@ const Order: React.FC = () => {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
+                    <IonButtons slot="start">
+                        <IonMenuButton></IonMenuButton>
+                    </IonButtons>
                     <IonTitle>Order</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
                 <IonRow>
-                    <IonCol offsetLg="4" sizeLg="4">
+                    <IonCol offsetLg="3" sizeLg="6"
+                            offsetMd="2" sizeMd="8"
+                            offsetSm="1" sizeSm="10">
                         <IonCard id="orderCard">
                             <IonCardHeader>
                                 <IonCardTitle id="orderCardTitle">Choose your Order</IonCardTitle>
