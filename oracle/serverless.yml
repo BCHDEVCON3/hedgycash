@@ -16,7 +16,6 @@ provider:
     MONGO_URL: ${file(./env.${self:provider.stage}.json):MONGO_URL}
     STAGE: ${self:provider.stage}
     PUSH_ON_CHAIN: ${file(./env.${self:provider.stage}.json):PUSH_ON_CHAIN}
-    FULLSTACK_CASH_TOKEN:  ${file(./env.${self:provider.stage}.json):FULLSTACK_CASH_TOKEN}
 
 plugins:
   - serverless-offline
@@ -56,6 +55,13 @@ functions:
       - http:
           path: api/rest/oracles/testCode
           method: post
+          cors: true
+  getOraclePrices:
+    handler: ./src/oracles/oracles.handler.getOraclePrices
+    events:
+      - http:
+          path: api/rest/oracles/pubKey/{pubKey}/prices
+          method: get
           cors: true
   publishPrice:
     handler: ./src/oracles/oracles.handler.publishPrice

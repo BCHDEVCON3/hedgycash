@@ -10,7 +10,7 @@ const bitbox = new BITBOX();
 const MIN_ORACLE_BALANCE = 0.001;
 
 class orderService {
-  create = ({ code, description = "", ...otherProps }) => {
+  create = async () => {
    
   };
 
