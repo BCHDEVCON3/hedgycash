@@ -24,3 +24,8 @@ export const setWallet = (address: string) => ({
     type: Actions.SET_ADDRESS,
     address,
 });
+
+export const setError = (error: boolean) => ({
+    type: Actions.SET_ERROR,
+    error,
+});

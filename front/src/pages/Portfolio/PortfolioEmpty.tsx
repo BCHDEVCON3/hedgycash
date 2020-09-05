@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     IonCard,
     IonCardContent,
@@ -8,16 +8,20 @@ import {
     IonLabel,
     IonButton,
     IonRow,
+    IonToast,
     IonCol,
 } from '@ionic/react';
 import { archive } from 'ionicons/icons';
 
-import { getAddressInit } from '../../Redux/Wallet';
+import { RootState } from '../../store';
+
+import { getAddressInit, setError } from '../../Redux/Wallet';
 
 import './Portfolio.css';
 
 const PortfolioEmpty: React.FC = () => {
     const dispatch = useDispatch();
+    const { error } = useSelector((state: RootState) => state.walletState);
 
     return (
         <IonRow>
@@ -37,6 +41,13 @@ const PortfolioEmpty: React.FC = () => {
                     </IonCardContent>
                 </IonCard>
             </IonCol>
+            <IonToast
+                isOpen={error}
+                onDidDismiss={() => dispatch(setError(false))}
+                color="danger"
+                message="Badger Wallet not installed or configured!"
+                duration={5000}
+            />
         </IonRow>
     );
 };

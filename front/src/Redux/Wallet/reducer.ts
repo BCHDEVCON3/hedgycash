@@ -33,6 +33,11 @@ export const walletReducer = (state = initialState, action: any) => {
                 ...state,
                 address: action.address,
             };
+        case Actions.SET_ERROR:
+            return {
+                ...state,
+                error: action.error,
+            };
         default:
             return state;
     }
