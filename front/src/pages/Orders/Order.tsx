@@ -37,7 +37,7 @@ const Order: React.FC = () => {
         setAssetValue(e.detail.value)
     };
 
-    const oSubmitOrderButtonClicked = () => {
+    const onSubmitOrderButtonClicked = () => {
         console.log(orderType)
         console.log(bchValue)
         console.log(assetValue)
@@ -67,7 +67,7 @@ const Order: React.FC = () => {
                                 <IonRow>
                                     <IonCol size="6">
                                         <IonText><h2>{orderType} in BCH:</h2></IonText>
-                                        <IonInput onIonChange={onBCHInputChanged} id="bleblelbleb" type="number" inputMode="decimal" placeholder="0.0" />
+                                        <IonInput onIonChange={onBCHInputChanged} type="number" inputMode="decimal" placeholder="0.0" />
                                     </IonCol>
                                     <IonCol size="6">
                                         <IonText><h2>Select Order Type:</h2></IonText>
@@ -93,7 +93,7 @@ const Order: React.FC = () => {
                                 </IonRow>
                                 <IonRow>
                                     <IonCol>
-                                        <IonButton id="submitOrder" expand="full" onClick={oSubmitOrderButtonClicked}>Submit Order</IonButton>
+                                        <IonButton id="submitOrder" expand="full" onClick={onSubmitOrderButtonClicked}>Submit Order</IonButton>
                                     </IonCol>
                                 </IonRow>
                             </IonCardContent>
