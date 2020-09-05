@@ -1,28 +1,31 @@
-import { compose, createStore, combineReducers, applyMiddleware, Action, Reducer } from "redux";
-import { walletReducer } from "./Redux/Wallet";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { compose, createStore, applyMiddleware, Action, Reducer } from 'redux';
+import { install, combineReducers } from 'redux-loop';
+import { walletReducer } from './Redux/Wallet';
+import { composeWithDevTools } from 'redux-devtools-extension';
 const persistState = require('redux-sessionstorage');
 
 const rootReducer: Reducer<any, Action<any>> = combineReducers({
-    walletState: walletReducer
+    walletState: walletReducer,
 });
 
 let composedEnhancers: any = [];
 
 const persistStateSlicer = () => (state: any) => ({
     walletState: {
-        auth: state.authState.auth,
+        address: state.walletState.address,
     },
 });
 
 if (process.env.NODE_ENV !== 'production') {
     composedEnhancers = composeWithDevTools(
         applyMiddleware(),
+        install(),
         persistState(null, { slicer: persistStateSlicer }),
     );
 } else {
     composedEnhancers = compose(
         applyMiddleware(),
+        install(),
         persistState(null, { slicer: persistStateSlicer }),
     );
 }
@@ -30,4 +33,3 @@ if (process.env.NODE_ENV !== 'production') {
 export const store = createStore(rootReducer, {}, composedEnhancers);
 
 export default store;
-

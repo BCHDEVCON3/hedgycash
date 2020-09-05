@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
     IonCard,
     IonCardContent,
@@ -12,9 +13,13 @@ import {
 } from '@ionic/react';
 import { addCircle, archive } from 'ionicons/icons';
 
+import { getAddressInit } from '../../Redux/Wallet';
+
 import './Portfolio.css';
 
 const PortfolioEmpty: React.FC = () => {
+    const dispatch = useDispatch();
+
     const [text] = useState<string>();
 
     return (
@@ -41,7 +46,9 @@ const PortfolioEmpty: React.FC = () => {
                             <IonLabel position="floating">mnemonic (seed phrase)</IonLabel>
                             <IonInput value={text}></IonInput>
                         </IonItem>
-                        <IonButton fill="outline">Import</IonButton>
+                        <IonButton fill="outline" onClick={() => dispatch(getAddressInit())}>
+                            Import
+                        </IonButton>
                     </IonCardContent>
                 </IonCard>
             </IonCol>
