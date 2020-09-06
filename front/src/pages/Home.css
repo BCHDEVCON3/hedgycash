@@ -1,0 +1,7 @@
+.home__title {
+    margin-top: 70px;
+    font-size: 35px;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word;
+    hyphens: auto;
+}
