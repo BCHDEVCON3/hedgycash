@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { IonCard, IonIcon } from '@ionic/react';
+import { IonCard } from '@ionic/react';
 import { LineChart, CartesianGrid, XAxis, YAxis, Legend, Tooltip, Line } from 'recharts';
-import { refresh } from 'ionicons/icons';
+
+import Loading from '../Loading/Loading';
 
 import { fetchChartData } from '../../Redux/Oracles';
 
@@ -24,7 +25,7 @@ const AssetChart = ({ oracle }) => {
     return (
         <IonCard className="asset-chart__card">
             {loading || !chartData ? (
-                <IonIcon className="icon-rotate" icon={refresh} size="large" />
+                <Loading />
             ) : (
                 <LineChart
                     className="asset-chart__chart"
