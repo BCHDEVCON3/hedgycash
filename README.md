@@ -10,7 +10,7 @@
 
 This application uses the AnyHedge protocol to provide decentralized hedge solution against arbitrary assets on the BCH network.
 
-## Front End
+## Front Web App
 
 ### Install
 
@@ -25,5 +25,19 @@ npm install
 
 ```bash
 cd front
+npm start
+```
+
+## Oracle server
+
+### Setup: Serverless and AWS credentials
+
+[https://www.serverless.com/framework/docs/providers/aws/guide/credentials/](https://www.serverless.com/framework/docs/providers/aws/guide/credentials)
+
+### Run locally
+
+```bash
+cd oracle
+npm i
 npm start
 ```
