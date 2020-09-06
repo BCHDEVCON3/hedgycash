@@ -6,22 +6,27 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
+  environment:
+    MONGO_URL: ${file(./env.${self:provider.stage}.json):MONGO_URL}
+    LONG_WIF: ${file(./env.${self:provider.stage}.json):LONG_WIF}
+    HEDGE_WIF: ${file(./env.${self:provider.stage}.json):HEDGE_WIF}
+    STAGE: ${self:provider.stage}
 
 plugins:
   - serverless-offline
 
 functions:
-  createOracle:
+  createOrder:
     handler: ./src/orders/orders.handler.create
     events:
       - http:
           path: api/rest/orders
           method: post
           cors: true
-  createContract:
-      handler: ./src/orders/orders.handler.createContract
+  createPaymentRequest:
+      handler: ./src/orders/orders.handler.createPaymentRequest
       events:
         - http:
-            path: api/rest/createContract
+            path: api/rest/createPaymentRequest
             method: get
             cors: true

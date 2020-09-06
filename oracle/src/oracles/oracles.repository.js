@@ -39,6 +39,10 @@ const OracleSchema = mongoose.Schema(
     description: {
       type: String,
     },
+    baseAsset: {
+      type: String,
+      required: true,
+    },
     state: {
       type: String,
       enum: Object.values(OracleState),

@@ -11,9 +11,30 @@ const OrderState = {
     FINISHED: 'FINISHED',
 };
 
+const numberValidator = {
+    validate: {
+        validator(sequence) {
+            return validator.isNumeric(`${sequence}`);
+        },
+    },
+};
+
 const OrderSchema = mongoose.Schema({
+    state: {
+        type: String,
+        enum: Object.values(OrderState),
+        required: true,
+        default: OrderState.UNFULFILLED,
+        validate: {
+            validator(state) {
+                return !!Object.values(OrderState).includes(state);
+            },
+        },
+    },
     amount: {
         type: Number,
+        required: true,
+        numberValidator,
     },
     hedgeAddress: {
         type: String,
@@ -23,6 +44,7 @@ const OrderSchema = mongoose.Schema({
     },
     oraclePubKey: {
         type: String,
+        required: true,
     },
     contractAddress: {
         type: String,
@@ -30,18 +52,28 @@ const OrderSchema = mongoose.Schema({
     contractMetadata: {},
     startPrice: {
         type: Number,
+        required: true,
+        numberValidator,
     },
     startBlockHeight: {
         type: Number,
+        required: true,
+        numberValidator,
     },
     maturityModifier: {
         type: Number,
+        required: true,
+        numberValidator,
     },
     highLiquidationPriceMultiplier: {
         type: Number,
+        required: true,
+        numberValidator,
     },
     lowLiquidationPriceMultiplier: {
         type: Number,
+        required: true,
+        numberValidator,
     },
 });
 
