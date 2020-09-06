@@ -51,24 +51,12 @@ const Menu = ({ history, location }: Props) => {
         <IonMenu contentId="main">
             <IonHeader>
                 <IonToolbar>
-                    <img
-                        className="side-menu-header__name"
-                        src={HedgyCashName}
-                        alt="logo"
-                        width="211"
-                        height="80"
-                    />
+                    <img className="side-menu-header__name" src={HedgyCashName} alt="logo" />
                 </IonToolbar>
             </IonHeader>
             <IonContent className="side-menu-content" id="main">
                 <IonList>{renderMenuItems()}</IonList>
-                <img
-                    className="side-menu-content__logo"
-                    src={HedgyCashLogoBlack}
-                    alt="logo"
-                    width="250"
-                    height="250"
-                />
+                <img className="side-menu-content__logo" src={HedgyCashLogoBlack} alt="logo" />
             </IonContent>
         </IonMenu>
     );

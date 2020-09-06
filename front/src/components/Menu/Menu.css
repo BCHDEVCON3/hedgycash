@@ -1,4 +1,6 @@
 .side-menu-header__name {
+    width: 211px;
+    height: 80px;
     margin: 5px 0;
     margin-left: calc(calc(100% - 211px) / 2);
 }
@@ -9,6 +11,33 @@
 
 .side-menu-content__logo {
     position: absolute;
+    height: 250px;
+    width: 250px;
     left: calc(calc(100% - 250px) / 2);
     bottom: 30px;
+}
+
+@media only screen and (max-height: 640px) {
+    .side-menu-content__logo {
+        height: 150px;
+        width: 150px;
+        left: calc(calc(100% - 150px) / 2);
+        bottom: 15px;
+    }
+}
+
+@media only screen and (max-height: 510px) {
+    .side-menu-content__logo {
+        height: 125px;
+        width: 125px;
+        left: calc(calc(100% - 125px) / 2);
+        bottom: 5px;
+    }
+
+    .side-menu-header__name {
+        width: 158px;
+        height: 60px;
+        margin: 5px 0;
+        margin-left: calc(calc(100% - 158px) / 2);
+    }
 }
