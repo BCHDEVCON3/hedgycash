@@ -1,4 +1,12 @@
-# Hedgy.Cash App
+# Hedgy.Cash App &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/BCHDEVCON3/hedgycash/blob/master/LICENSE) 
+
+[![](https://img.shields.io/badge/-Node.js-gray?logo=node.js)]()
+[![](https://img.shields.io/badge/-Serverless-gray?logo=serverless)]()
+[![](https://img.shields.io/badge/-MongoDB-gray?logo=mongodb)]()
+[![](https://img.shields.io/badge/-React-gray?logo=react)]()
+[![](https://img.shields.io/badge/-Ionic-gray?logo=ionic)]()
+
+![Logo](front/src/assets/hedgycash-name.png "Logo")
 
 This application uses the AnyHedge protocol to provide decentralized hedge solution against arbitrary assets on the BCH network.
 
