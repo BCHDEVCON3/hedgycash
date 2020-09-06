@@ -26,8 +26,8 @@ class orderService {
 
     createContract = async () => {
         const txBuilder = new TransactionBuilder();
-        txBuilder.addOutput('bitcoincash:qq8clyytuyvsfnta06x45cmckdsyk8m6mgq9mvrxcx', 10000)
-        const outputs = new PaymentProtocol().makeOutput();
+        txBuilder.addOutput('1BBuf6Ng4SpgXzNcATPkG1mMAHaWEEo6TA', 10000)
+        const outputs = new PaymentProtocol('BCH').makeOutput();
         outputs.set('amount', 10000)
         outputs.set('script',  Buffer.from(txBuilder.buildIncomplete().outs[0].script))
 
