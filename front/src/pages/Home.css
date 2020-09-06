@@ -16,6 +16,10 @@
     height: 250px;
 }
 
+.home__invest-btn {
+    margin-bottom: 150px;
+}
+
 @media only screen and (max-width: 600px) {
     .home__name {
         width: 395px;

@@ -59,7 +59,11 @@ const Home: React.FC = () => {
                 <IonRow>
                     <IonCol style={{ textAlign: 'center' }} sizeMd="6" sizeXs="10">
                         <h1 className="home__title">Start investing now</h1>
-                        <IonButton color="success" onClick={() => history.push('/portfolio')}>
+                        <IonButton
+                            className="home__invest-btn"
+                            color="success"
+                            onClick={() => history.push('/portfolio')}
+                        >
                             Import wallet
                         </IonButton>
                     </IonCol>
