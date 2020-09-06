@@ -43,7 +43,7 @@ const Book: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
                 <IonRow>
-                    {loading || !contracts.length ? (
+                    {loading ? (
                         <Loading className="book__loading" />
                     ) : (
                         <>

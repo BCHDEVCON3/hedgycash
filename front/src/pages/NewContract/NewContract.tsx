@@ -53,38 +53,11 @@ const NewContract: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    // const onSubmitOrderButtonClicked = () => {
-    //     (bitcoincomLink as any).getAddress({ protocol: 'BCH' }).then(() =>
-    //         (bitcoincomLink as any)
-    //             .sendAssets({
-    //                 to: 'bitcoincash:qrd9khmeg4nqag3h5gzu8vjt537pm7le85lcauzezc',
-    //                 protocol: 'BCH',
-    //                 value: '0.000123',
-    //             })
-    //             //   })payInvoice({
-    //             //   //  url: 'http://1a4adcc7a8ec.ngrok.io/dev/api/rest/createPaymentRequest?amount=546',
-    //             //   url: 'bitcoincash:?r=http://1a4adcc7a8ec.ngrok.io/dev/api/rest/createPaymentRequest?amount=546'
-    //             //     })
-    //             .then((data: any) => {
-    //                 const { memo } = data;
-    //                 setDebugMessage('foi');
-    //                 setDebug(true);
-    //                 console.log('Payment processed memo from merchant server: ' + memo);
-    //             })
-    //             .catch((e) => {
-    //                 console.log('ERRORRR');
-    //                 setDebugMessage(JSON.stringify(e));
-    //                 setDebug(true);
-    //                 console.log(e);
-    //             }),
-    //     );
-    // };
-
     const onSubmitOrder = () => {
         (bitcoincomLink as any).getAddress({ protocol: 'BCH' }).then(({ address }) => {
         ordersApi
             .post('/orders', {
-                oraclePubKey: selectedOracle.pubKey,
+                oraclePubKey: '0273ee49099f0a09be514cbb45756bf49ad256d0a6de993107e98c89c16b6fa84e',
                 maturityModifier: Number(orderState.maturity),
                 highLiquidationPriceMultiplier: Number(orderState.highMultiplier),
                 lowLiquidationPriceMultiplier: Number(orderState.lowMultiplier),
