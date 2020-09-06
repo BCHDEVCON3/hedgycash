@@ -168,9 +168,11 @@ const Order: React.FC = () => {
                                 </IonRow>
                             </IonCardContent>
                         </IonCard>
-                        <IonCard>
-                            <AssetChart oracle={selectedOracle} />
-                        </IonCard>
+                    </IonCol>
+                </IonRow>
+                <IonRow>
+                    <IonCol>
+                        <AssetChart oracle={selectedOracle} />
                     </IonCol>
                 </IonRow>
             </IonContent>
