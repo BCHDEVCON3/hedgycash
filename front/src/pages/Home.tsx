@@ -57,13 +57,7 @@ const Home: React.FC = () => {
                     </IonCol>
                 </IonRow>
                 <IonRow>
-                    <IonCol
-                        style={{ textAlign: 'center' }}
-                        offsetMd="1"
-                        sizeMd="6"
-                        offsetXs="1"
-                        sizeXs="10"
-                    >
+                    <IonCol style={{ textAlign: 'center' }} sizeMd="6" sizeXs="10">
                         <h1 className="home__title">Start investing now</h1>
                         <IonButton color="success" onClick={() => history.push('/portfolio')}>
                             Import wallet
