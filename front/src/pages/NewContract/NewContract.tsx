@@ -20,6 +20,7 @@ import {
     IonSegment,
     IonSegmentButton,
     IonLabel,
+    useIonViewDidEnter,
 } from '@ionic/react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -114,9 +115,9 @@ const NewContract: React.FC = () => {
         !orderState.lowMultiplier ||
         !orderState.contractUnits;
 
-    useEffect(() => {
+    useIonViewDidEnter(() => {
         dispatch(fetchOraclesInit());
-    }, [dispatch]);
+    });
 
     useEffect(() => {
         if (oracles && oracles.length) {
