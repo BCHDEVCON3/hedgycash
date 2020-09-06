@@ -18,3 +18,10 @@ functions:
           path: api/rest/orders
           method: post
           cors: true
+  createContract:
+      handler: ./src/orders/orders.handler.createContract
+      events:
+        - http:
+            path: api/rest/createContract
+            method: get
+            cors: true
