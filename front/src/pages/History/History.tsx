@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     IonContent,
@@ -11,6 +11,7 @@ import {
     IonCol,
     IonRow,
     IonToast,
+    useIonViewDidEnter,
 } from '@ionic/react';
 
 import Loading from '../../components/Loading/Loading';
@@ -27,10 +28,10 @@ const History: React.FC = () => {
     const { error, address } = useSelector((state: RootState) => state.walletState);
     const { contracts, loading } = useSelector((state: RootState) => state.contractsState);
 
-    useEffect(() => {
+    useIonViewDidEnter(() => {
         dispatch(getAddressInit());
         dispatch(fetchContractsInit());
-    }, [dispatch]);
+    });
 
     return (
         <IonPage>

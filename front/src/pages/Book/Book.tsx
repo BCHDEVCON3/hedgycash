@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     IonContent,
@@ -10,6 +10,7 @@ import {
     IonMenuButton,
     IonRow,
     IonCol,
+    useIonViewDidEnter,
 } from '@ionic/react';
 
 import Contract from './Contract';
@@ -25,9 +26,9 @@ const Book: React.FC = () => {
 
     const { contracts, loading } = useSelector((state: RootState) => state.contractsState);
 
-    useEffect(() => {
+    useIonViewDidEnter(() => {
         dispatch(fetchContractsInit());
-    }, [dispatch]);
+    });
 
     return (
         <IonPage>
