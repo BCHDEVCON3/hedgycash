@@ -15,6 +15,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { PAGES, Page } from '../../constants/constants';
 
+import HedgyCashLogoBlack from './assets/hedgycash-black.png';
+
+import './Menu.css';
+
 type Props = RouteComponentProps<{}>;
 
 const Menu = ({ history, location }: Props) => {
@@ -31,19 +35,16 @@ const Menu = ({ history, location }: Props) => {
         return PAGES.map((page: Page) => (
             <IonMenuToggle key={page.title} auto-hide="false">
                 <IonItem color={page.title === activePage ? 'primary' : ''}>
-                    <IonButton
-                        fill="clear"
-                        expand="full"
-                        onClick={() => navigateToPage(page)}>
-                            <IonLabel color="dark">{page.title}</IonLabel>
-                    </IonButton>  
+                    <IonButton fill="clear" expand="full" onClick={() => navigateToPage(page)}>
+                        <IonLabel color="dark">{page.title}</IonLabel>
+                    </IonButton>
                 </IonItem>
             </IonMenuToggle>
         ));
     };
 
     const navigateToPage = (page: Page) => {
-        history.push(page.path)
+        history.push(page.path);
     };
 
     return (
@@ -53,8 +54,15 @@ const Menu = ({ history, location }: Props) => {
                     <IonTitle>Hedgy.Cash</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent id="main">
+            <IonContent className="side-menu-content" id="main">
                 <IonList>{renderMenuItems()}</IonList>
+                <img
+                    className="side-menu-content__logo"
+                    src={HedgyCashLogoBlack}
+                    alt="logo"
+                    width="250"
+                    height="250"
+                />
             </IonContent>
         </IonMenu>
     );

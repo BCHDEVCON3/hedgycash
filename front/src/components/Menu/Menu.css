@@ -1,0 +1,9 @@
+.side-menu-content {
+    position: relative;
+}
+
+.side-menu-content__logo {
+    position: absolute;
+    left: calc(calc(100% - 250px) / 2);
+    bottom: 30px;
+}
