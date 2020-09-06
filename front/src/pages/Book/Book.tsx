@@ -47,17 +47,19 @@ const Book: React.FC = () => {
                         <Loading className="book__loading" />
                     ) : (
                         <>
-                            {contracts.map((contract, index) => (
-                                <IonCol
-                                    key={`${contract.oraclePubKey}${index}`}
-                                    size="3"
-                                    size-lg="4"
-                                    size-sm="6"
-                                    size-xs="12"
-                                >
-                                    <Contract contract={contract} />
-                                </IonCol>
-                            ))}
+                            {contracts
+                                .filter((elem) => elem.state === 'UNFULFILLED')
+                                .map((contract, index) => (
+                                    <IonCol
+                                        key={`${contract.oraclePubKey}${index}`}
+                                        size="3"
+                                        size-lg="4"
+                                        size-sm="6"
+                                        size-xs="12"
+                                    >
+                                        <Contract contract={contract} />
+                                    </IonCol>
+                                ))}
                         </>
                     )}
                 </IonRow>
