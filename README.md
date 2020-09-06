@@ -10,6 +10,8 @@
 
 This application uses the AnyHedge protocol to provide decentralized hedge solution against arbitrary assets on the BCH network.
 
+![Print](print.png "Print")
+
 ## Oracle server
 
 ### Setup: Serverless and AWS credentials
