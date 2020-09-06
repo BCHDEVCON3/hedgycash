@@ -68,7 +68,7 @@ const NewContract: React.FC = () => {
                 
             })
             .then((response : any) => {
-                console.log('response fsss', response);
+                
                 (bitcoincomLink as any).sendAssets({
                                 to: orderState.strategy === 'hedge' ? response.data.hedge.address : response.data.long.address,
                                 protocol: 'BCH',
@@ -79,6 +79,12 @@ const NewContract: React.FC = () => {
                                 setPostError(false);
                                 setToastMsg('Contract created!');
                                 setOrderState(initialOrderState);
+                                ordersApi
+                                .post('/orders/confirmPayment', {
+                                    address:  orderState.strategy === 'hedge' ? response.data.hedge.address : response.data.long.address,
+                                    id: response.data._id
+                                    
+                                })
                                
                             })
             
