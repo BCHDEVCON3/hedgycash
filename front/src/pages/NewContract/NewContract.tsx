@@ -207,7 +207,7 @@ const NewContract: React.FC = () => {
                                 <IonRow>
                                     <IonCol size="6">
                                         <IonText>
-                                            <h2>High Liquidation Price Multiplier (%)</h2>
+                                            <h2>High Liquidation Price Multiplier</h2>
                                         </IonText>
                                         <IonInput
                                             onIonChange={(e) =>
@@ -227,7 +227,7 @@ const NewContract: React.FC = () => {
                                     </IonCol>
                                     <IonCol size="6">
                                         <IonText>
-                                            <h2>Low Liquidation Price Multiplier (%)</h2>
+                                            <h2>Low Liquidation Price Multiplier</h2>
                                         </IonText>
                                         <IonInput
                                             onIonChange={(e) =>
