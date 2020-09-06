@@ -80,24 +80,31 @@ const NewContract: React.FC = () => {
     // };
 
     const onSubmitOrder = () => {
-        ordersApi
-            .post('/orders', {
-                oraclePubKey: selectedOracle.pubKey,
-                maturityModifier: Number(orderState.maturity),
-                highLiquidationPriceMultiplier: Number(orderState.highMultiplier),
-                lowLiquidationPriceMultiplier: Number(orderState.lowMultiplier),
-                contractUnits: Number(orderState.contractUnits),
-                isHedge: orderState.strategy === 'hedge',
-            })
-            .then(() => {
-                setPostError(false);
-                setToastMsg('Contract created!');
-                setOrderState(initialOrderState);
-            })
-            .catch(() => {
-                setPostError(true);
-                setToastMsg('Contract failed!');
-            });
+        const high = Number(orderState.highMultiplier);
+        const low = Number(orderState.lowMultiplier);
+        if (high >= 1.2 && high <= 1.9 && low >= 0.1 && low <= 0.9) {
+            ordersApi
+                .post('/orders', {
+                    oraclePubKey: selectedOracle.pubKey,
+                    maturityModifier: Number(orderState.maturity),
+                    highLiquidationPriceMultiplier: Number(orderState.highMultiplier),
+                    lowLiquidationPriceMultiplier: Number(orderState.lowMultiplier),
+                    contractUnits: Number(orderState.contractUnits),
+                    isHedge: orderState.strategy === 'hedge',
+                })
+                .then(() => {
+                    setPostError(false);
+                    setToastMsg('Contract created!');
+                    setOrderState(initialOrderState);
+                })
+                .catch(() => {
+                    setPostError(true);
+                    setToastMsg('Contract failed!');
+                });
+        } else {
+            setPostError(true);
+            setToastMsg('Multipliers are out of bounds!');
+        }
     };
 
     const isDisabled = () =>
@@ -217,11 +224,12 @@ const NewContract: React.FC = () => {
                                                 }))
                                             }
                                             type="number"
-                                            inputMode="numeric"
+                                            inputMode="decimal"
                                             value={orderState.highMultiplier}
-                                            min="2"
-                                            max="10"
-                                            placeholder="2"
+                                            min="1.2"
+                                            max="1.9"
+                                            step="0.1"
+                                            placeholder="1.2"
                                             required
                                         />
                                     </IonCol>
@@ -239,9 +247,10 @@ const NewContract: React.FC = () => {
                                             type="number"
                                             inputMode="numeric"
                                             value={orderState.lowMultiplier}
-                                            min="1"
-                                            max="5"
-                                            placeholder="1"
+                                            min="0.1"
+                                            max="0.9"
+                                            step="0.1"
+                                            placeholder="0.1"
                                             required
                                         />
                                     </IonCol>
@@ -261,8 +270,9 @@ const NewContract: React.FC = () => {
                                             type="number"
                                             inputMode="numeric"
                                             value={orderState.contractUnits}
-                                            min="1"
-                                            placeholder="1"
+                                            min="50"
+                                            max="100"
+                                            placeholder="50"
                                             required
                                         />
                                     </IonCol>
