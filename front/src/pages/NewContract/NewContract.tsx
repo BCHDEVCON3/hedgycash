@@ -30,7 +30,7 @@ import { ordersApi } from '../../utils/axios';
 import './NewContract.css';
 
 const NewContract: React.FC = () => {
-    const initialOrderState = { maturity: '', multiplier: '' };
+    const initialOrderState = { maturity: '', highMultiplier: '', lowMultiplier: '' };
     const oracleState = { address: '', asset: '', pubKey: '' };
 
     const [asset, setAsset] = useState<string>();
@@ -71,8 +71,8 @@ const NewContract: React.FC = () => {
     // };
 
     const onSubmitOrder = () => {
-        const highLiquidationPriceMultiplier = 1 + Number(orderState.multiplier) / 100;
-        const lowLiquidationPriceMultiplier = 1 - Number(orderState.multiplier) / 100;
+        const highLiquidationPriceMultiplier = 1 + Number(orderState.highMultiplier) / 100;
+        const lowLiquidationPriceMultiplier = 1 - Number(orderState.lowMultiplier) / 100;
         ordersApi
             .post('/orders', {
                 oraclePubKey: selectedOracle.pubKey,
@@ -87,13 +87,11 @@ const NewContract: React.FC = () => {
             .catch(() => {
                 setPostError(true);
                 setToastMsg('Contract failed!');
-            })
-            .finally(() => {
-                setOrderState(initialOrderState);
             });
     };
 
-    const isDisabled = () => !asset || !orderState.maturity || !orderState.multiplier;
+    const isDisabled = () =>
+        !asset || !orderState.maturity || !orderState.highMultiplier || !orderState.lowMultiplier;
 
     useEffect(() => {
         dispatch(fetchOraclesInit());
@@ -172,21 +170,39 @@ const NewContract: React.FC = () => {
                                     </IonCol>
                                 </IonRow>
                                 <IonRow>
-                                    <IonCol size="12">
+                                    <IonCol size="6">
                                         <IonText>
-                                            <h2>Price Variation (%)</h2>
-                                            <h5>Stop loss and gain</h5>
+                                            <h2>High Liquidation Price Multiplier (%)</h2>
                                         </IonText>
                                         <IonInput
                                             onIonChange={(e) =>
                                                 setOrderState((prev) => ({
                                                     ...prev,
-                                                    multiplier: e.detail.value!,
+                                                    highMultiplier: e.detail.value!,
                                                 }))
                                             }
                                             type="number"
                                             inputMode="numeric"
-                                            value={orderState.multiplier}
+                                            value={orderState.highMultiplier}
+                                            min="1"
+                                            placeholder="1"
+                                            required
+                                        />
+                                    </IonCol>
+                                    <IonCol size="6">
+                                        <IonText>
+                                            <h2>Low Liquidation Price Multiplier (%)</h2>
+                                        </IonText>
+                                        <IonInput
+                                            onIonChange={(e) =>
+                                                setOrderState((prev) => ({
+                                                    ...prev,
+                                                    lowMultiplier: e.detail.value!,
+                                                }))
+                                            }
+                                            type="number"
+                                            inputMode="numeric"
+                                            value={orderState.lowMultiplier}
                                             min="1"
                                             max="99"
                                             placeholder="1"
