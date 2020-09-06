@@ -8,4 +8,5 @@ export const normalizeContracts = (contracts) =>
         long: contract.long,
         maturity: contract.maturityModifier,
         oraclePubKey: contract.oraclePubKey,
+        description: contract.description,
     }));

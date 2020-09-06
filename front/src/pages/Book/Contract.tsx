@@ -42,7 +42,7 @@ const Contract: React.FC<ContractInterface> = ({ contract }) => {
                     <IonCol size="6">
                         <IonText>
                             <h2>
-                                <strong>BCH/USDT</strong>
+                                <strong>{contract.description}</strong>
                             </h2>
                         </IonText>
                         <IonText>
