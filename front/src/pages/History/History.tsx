@@ -9,31 +9,27 @@ import {
     IonButtons,
     IonMenuButton,
     IonCol,
-    IonCard,
-    IonCardHeader,
-    IonSegment,
-    IonSegmentButton,
-    IonLabel,
-    IonCardContent,
     IonRow,
-    IonText,
     IonToast,
 } from '@ionic/react';
 
 import Loading from '../../components/Loading/Loading';
 
 import { getAddressInit } from '../../Redux/Wallet';
+import { fetchContractsInit } from '../../Redux/Contracts';
 import { RootState } from '../../store';
 
 import './History.css';
+import FinishedContract from './FinishedContract';
 
 const History: React.FC = () => {
-    const loading = false;
     const dispatch = useDispatch();
-    const { error } = useSelector((state: RootState) => state.walletState);
+    const { error, address } = useSelector((state: RootState) => state.walletState);
+    const { contracts, loading } = useSelector((state: RootState) => state.contractsState);
 
     useEffect(() => {
         dispatch(getAddressInit());
+        dispatch(fetchContractsInit());
     }, [dispatch]);
 
     return (
@@ -53,55 +49,26 @@ const History: React.FC = () => {
                     {loading ? (
                         <Loading className="history__loading" />
                     ) : (
-                        <IonCol size="3" size-lg="4" size-sm="6" size-xs="12">
-                            <IonCard>
-                                <IonCardHeader>
-                                    <IonSegment color="success" value="long">
-                                        <IonSegmentButton value="long">
-                                            <IonLabel>Long</IonLabel>
-                                        </IonSegmentButton>
-                                    </IonSegment>
-                                </IonCardHeader>
-                                <IonCardContent>
-                                    <IonRow>
-                                        <IonCol size="6">
-                                            <IonText>
-                                                <h2>
-                                                    <strong>BCH/USD</strong>
-                                                </h2>
-                                            </IonText>
-                                            <IonText>
-                                                <h2>1000</h2>
-                                            </IonText>
-                                        </IonCol>
-                                        <IonCol size="6">
-                                            <IonText>
-                                                <h2>Matures in 3 blocks</h2>
-                                            </IonText>
-                                        </IonCol>
-                                    </IonRow>
-                                    <IonRow>
-                                        <IonCol>
-                                            <h2>
-                                                <strong>Liquidation</strong>
-                                            </h2>
-                                            <IonRow>
-                                                <IonCol size="6">
-                                                    <IonText>
-                                                        <h2>High: 2x</h2>
-                                                    </IonText>
-                                                </IonCol>
-                                                <IonCol size="6">
-                                                    <IonText>
-                                                        <h2>Low: 2x</h2>
-                                                    </IonText>
-                                                </IonCol>
-                                            </IonRow>
-                                        </IonCol>
-                                    </IonRow>
-                                </IonCardContent>
-                            </IonCard>
-                        </IonCol>
+                        <>
+                            {contracts
+                                .filter((elem) => elem.state === 'FULFILLED')
+                                .filter(
+                                    (elem) =>
+                                        elem.hedge.creator === address ||
+                                        elem.long.creator === address,
+                                )
+                                .map((contract, index) => (
+                                    <IonCol
+                                        key={`${contract.oraclePubKey}${index}`}
+                                        size="3"
+                                        size-lg="4"
+                                        size-sm="6"
+                                        size-xs="12"
+                                    >
+                                        <FinishedContract contract={contract} address={address} />
+                                    </IonCol>
+                                ))}
+                        </>
                     )}
                 </IonRow>
             </IonContent>
