@@ -1,5 +1,5 @@
 import { Actions } from './constants';
-import axios from '../../utils/axios';
+import { oraclesApi } from '../../utils/axios';
 import { normalizeOracles, normalizeChartData } from './normalizers';
 
 export const fetchOraclesInit = () => ({
@@ -7,7 +7,7 @@ export const fetchOraclesInit = () => ({
 });
 
 export const fetchOracles = () =>
-    axios
+    oraclesApi
         .get('/oracles')
         .then((response) => response.data)
         .then(normalizeOracles);
@@ -22,7 +22,7 @@ export const fetchOraclesError = () => ({
 });
 
 export const fetchChartData = (pubKey) =>
-    axios
+    oraclesApi
         .get(`oracles/pubKey/${pubKey}/prices`)
         .then((response) => response.data)
         .then(normalizeChartData);
