@@ -11,6 +11,7 @@ import './AssetChart.css';
 const AssetChart = ({ oracle }) => {
     const [loading, setLoading] = useState(false);
     const [chartData, setChartData] = useState(false);
+    const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
 
     useEffect(() => {
         if (oracle) {
@@ -18,9 +19,23 @@ const AssetChart = ({ oracle }) => {
             fetchChartData(oracle.pubKey).then((data) => {
                 setLoading(false);
                 setChartData(data);
+                const interval = setInterval(() => {
+                    fetchChartData(oracle.pubKey).then((data) => {
+                        setChartData(data);
+                    });
+                }, 60000);
+                setIntervalId(interval);
             });
         }
     }, [oracle]);
+
+    useEffect(() => {
+        return () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
+    });
 
     return (
         <IonCard className="asset-chart__card">
