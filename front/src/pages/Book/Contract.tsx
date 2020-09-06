@@ -71,7 +71,7 @@ const Contract: React.FC<ContractInterface> = ({ contract }) => {
                             </h2>
                         </IonText>
                         <IonText>
-                            <h2>{contract[strategy].amount}</h2>
+                            <h2>{strategy === 'hedge' ? Number(contract.long.amount/10 ** 8).toFixed(8)  : Number(contract.hedge.amount/10 ** 8).toFixed(8) }</h2>
                         </IonText>
                     </IonCol>
                     <IonCol size="6">
