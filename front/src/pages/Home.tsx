@@ -5,10 +5,8 @@ import {
     IonRow,
     IonCol,
     IonHeader,
-    IonToolbar,
     IonButtons,
     IonMenuButton,
-    IonTitle,
 } from '@ionic/react';
 
 import './Home.css';
