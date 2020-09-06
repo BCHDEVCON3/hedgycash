@@ -139,6 +139,8 @@ class OraclesService {
 
     getOraclePrices = async (oraclePubkey) => {
         const oracle = await this.findByPubKey(oraclePubkey);
+        // const ecpair = bitbox.ECPair.fromPublicKey(Buffer.from(oraclePubkey, 'hex'));
+        // const address = bitbox.ECPair.toCashAddress(ecpair)
 
         let transactions = await bitbox.Address.transactions(oracle.address);
         return await Promise.all(

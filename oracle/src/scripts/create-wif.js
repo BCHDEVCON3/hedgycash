@@ -6,3 +6,4 @@ const address = privateKey.toAddress().toString();
 
 console.info(wif);
 console.info(address);
+console.info(privateKey.toPublicKey().toString());

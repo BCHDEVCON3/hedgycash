@@ -23,7 +23,7 @@ class WatcherService {
       } else {
         watcher.blockSequence += 1;
       }
-      if (process.env.PUSH_ON_CHAIN === "true" && !process.env.IS_OFFLINE) {
+      if (process.env.PUSH_ON_CHAIN === "true" && process.env.IS_OFFLINE) {
         const oracles = await Oracles.find({
           state: Oracles.OracleState.RUNNING,
         });
