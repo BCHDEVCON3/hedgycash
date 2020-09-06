@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     IonContent,
     IonHeader,
@@ -19,14 +19,25 @@ import {
     IonButtons,
     IonMenuButton,
 } from '@ionic/react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import AssetChart from '../../components/AssetChart/AssetChart';
+
+import { fetchOraclesInit } from '../../Redux/Oracles';
+import { RootState } from '../../store';
 
 import './Order.css';
 
 const Order: React.FC = () => {
     const [orderType, setOrderType] = useState<string>('Hedge');
-    const [asset, setAsset] = useState<string>('USD');
+    const [asset, setAsset] = useState<string>();
     const [bchValue, setBCHValue] = useState<number>();
     const [assetValue, setAssetValue] = useState<number>();
+    const [selectedOracle, setSelectedOracle] = useState(null);
+
+    const { oracles } = useSelector((state: RootState) => state.oraclesState);
+
+    const dispatch = useDispatch();
 
     const onBCHInputChanged = (e: CustomEvent) => {
         setBCHValue(e.detail.value);
@@ -42,6 +53,17 @@ const Order: React.FC = () => {
         console.log(assetValue);
         console.log(asset);
     };
+
+    useEffect(() => {
+        dispatch(fetchOraclesInit());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (oracles && oracles.length) {
+            setAsset(oracles[0].asset);
+            setSelectedOracle(oracles[0]);
+        }
+    }, [oracles]);
 
     return (
         <IonPage>
@@ -113,11 +135,23 @@ const Order: React.FC = () => {
                                         <IonSelect
                                             interface="popover"
                                             value={asset}
-                                            onIonChange={(e) => setAsset(e.detail.value)}
+                                            onIonChange={(e) => {
+                                                oracles.forEach((oracle) => {
+                                                    if (oracle.asset === e.detail.value) {
+                                                        setAsset(oracle.asset);
+                                                        setSelectedOracle(oracle);
+                                                    }
+                                                });
+                                            }}
                                         >
-                                            <IonSelectOption value="USD">USD</IonSelectOption>
-                                            <IonSelectOption value="ETH">ETH</IonSelectOption>
-                                            <IonSelectOption value="BTC">BTC</IonSelectOption>
+                                            {oracles.map((oracle) => (
+                                                <IonSelectOption
+                                                    key={oracle.pubKey}
+                                                    value={oracle.asset}
+                                                >
+                                                    {oracle.asset}
+                                                </IonSelectOption>
+                                            ))}
                                         </IonSelect>
                                     </IonCol>
                                 </IonRow>
@@ -133,6 +167,9 @@ const Order: React.FC = () => {
                                     </IonCol>
                                 </IonRow>
                             </IonCardContent>
+                        </IonCard>
+                        <IonCard>
+                            <AssetChart oracle={selectedOracle} />
                         </IonCard>
                     </IonCol>
                 </IonRow>

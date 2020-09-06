@@ -10,3 +10,11 @@ export const normalizeOracles = (oracles) =>
             pubKey: oracle.pubKey,
         };
     });
+
+export const normalizeChartData = (chartData) =>
+    chartData &&
+    chartData.map &&
+    chartData.map((point) => ({
+        price: point.price,
+        timestamp: point.timestamp,
+    }));
