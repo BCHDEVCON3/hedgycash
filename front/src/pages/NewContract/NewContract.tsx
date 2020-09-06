@@ -22,50 +22,72 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AssetChart from '../../components/AssetChart/AssetChart';
 
-import { fetchOraclesInit } from '../../Redux/Oracles';
+import { fetchOraclesInit, Oracle } from '../../Redux/Oracles';
 import { RootState } from '../../store';
-import bitcoincomLink from 'bitcoincom-link';
+// import bitcoincomLink from 'bitcoincom-link';
+import { ordersApi } from '../../utils/axios';
 
 import './NewContract.css';
 
 const NewContract: React.FC = () => {
     const initialOrderState = { maturity: '', highMultiplier: '', lowMultiplier: '' };
+    const oracleState = { address: '', asset: '', pubKey: '' };
 
     const [asset, setAsset] = useState<string>();
-    const [selectedOracle, setSelectedOracle] = useState(null);
-    const [debug, setDebug] = useState(false);
-    const [debugMessage, setDebugMessage] = useState('');
+    const [selectedOracle, setSelectedOracle] = useState<Oracle>(oracleState);
+    const [postError, setPostError] = useState(false);
+    const [toastMsg, setToastMsg] = useState('');
     const [orderState, setOrderState] = React.useState(initialOrderState);
 
     const { oracles } = useSelector((state: RootState) => state.oraclesState);
 
     const dispatch = useDispatch();
 
-    const onSubmitOrderButtonClicked = () => {
-        (bitcoincomLink as any).getAddress({ protocol: 'BCH' }).then(() =>
-            (bitcoincomLink as any)
-                .sendAssets({
-                    to: 'bitcoincash:qrd9khmeg4nqag3h5gzu8vjt537pm7le85lcauzezc',
-                    protocol: 'BCH',
-                    value: '0.000123',
-                })
-                //   })payInvoice({
-                //   //  url: 'http://1a4adcc7a8ec.ngrok.io/dev/api/rest/createPaymentRequest?amount=546',
-                //   url: 'bitcoincash:?r=http://1a4adcc7a8ec.ngrok.io/dev/api/rest/createPaymentRequest?amount=546'
-                //     })
-                .then((data: any) => {
-                    const { memo } = data;
-                    setDebugMessage('foi');
-                    setDebug(true);
-                    console.log('Payment processed memo from merchant server: ' + memo);
-                })
-                .catch((e) => {
-                    console.log('ERRORRR');
-                    setDebugMessage(JSON.stringify(e));
-                    setDebug(true);
-                    console.log(e);
-                }),
-        );
+    // const onSubmitOrderButtonClicked = () => {
+    //     (bitcoincomLink as any).getAddress({ protocol: 'BCH' }).then(() =>
+    //         (bitcoincomLink as any)
+    //             .sendAssets({
+    //                 to: 'bitcoincash:qrd9khmeg4nqag3h5gzu8vjt537pm7le85lcauzezc',
+    //                 protocol: 'BCH',
+    //                 value: '0.000123',
+    //             })
+    //             //   })payInvoice({
+    //             //   //  url: 'http://1a4adcc7a8ec.ngrok.io/dev/api/rest/createPaymentRequest?amount=546',
+    //             //   url: 'bitcoincash:?r=http://1a4adcc7a8ec.ngrok.io/dev/api/rest/createPaymentRequest?amount=546'
+    //             //     })
+    //             .then((data: any) => {
+    //                 const { memo } = data;
+    //                 setDebugMessage('foi');
+    //                 setDebug(true);
+    //                 console.log('Payment processed memo from merchant server: ' + memo);
+    //             })
+    //             .catch((e) => {
+    //                 console.log('ERRORRR');
+    //                 setDebugMessage(JSON.stringify(e));
+    //                 setDebug(true);
+    //                 console.log(e);
+    //             }),
+    //     );
+    // };
+
+    const onSubmitOrder = () => {
+        const highLiquidationPriceMultiplier = 1 + Number(orderState.highMultiplier) / 100;
+        const lowLiquidationPriceMultiplier = 1 - Number(orderState.lowMultiplier) / 100;
+        ordersApi
+            .post('/orders', {
+                oraclePubKey: selectedOracle.pubKey,
+                maturityModifier: Number(orderState.maturity),
+                highLiquidationPriceMultiplier,
+                lowLiquidationPriceMultiplier,
+            })
+            .then(() => {
+                setPostError(false);
+                setToastMsg('Contract created!');
+            })
+            .catch(() => {
+                setPostError(true);
+                setToastMsg('Contract failed!');
+            });
     };
 
     const isDisabled = () =>
@@ -195,7 +217,7 @@ const NewContract: React.FC = () => {
                                             disabled={isDisabled()}
                                             color="success"
                                             expand="full"
-                                            onClick={onSubmitOrderButtonClicked}
+                                            onClick={onSubmitOrder}
                                         >
                                             Submit New Contract
                                         </IonButton>
@@ -207,12 +229,11 @@ const NewContract: React.FC = () => {
                 </IonRow>
             </IonContent>
             <IonToast
-                id=""
-                isOpen={debug}
-                onDidDismiss={() => setDebug(false)}
-                color="light"
-                message={debugMessage}
-                duration={2000}
+                isOpen={!!toastMsg}
+                onDidDismiss={() => setToastMsg('')}
+                color={postError ? 'danger' : 'light'}
+                message={toastMsg}
+                duration={3000}
             />
         </IonPage>
     );
