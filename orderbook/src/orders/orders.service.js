@@ -49,7 +49,14 @@ class orderService {
         }
     };
 
-    createPaymentRequest = async () => {
+    createPaymentRequest = async ({
+        amount,
+        hedge = true,
+        oraclePubKey,
+        maturityModifier,
+        highLiquidationPriceMultiplier,
+        lowLiquidationPriceMultiplier,
+    }) => {
         try {
             const txBuilder = new TransactionBuilder();
             txBuilder.addOutput('1BBuf6Ng4SpgXzNcATPkG1mMAHaWEEo6TA', 10000);
@@ -62,7 +69,16 @@ class orderService {
             paymentDetails.set('time', 0);
             paymentDetails.set(
                 'merchant_data',
-                Buffer.from(JSON.stringify({ testData: 'teste' })),
+                Buffer.from(
+                    JSON.stringify({
+                        amount,
+                        hedge,
+                        oraclePubKey,
+                        maturityModifier,
+                        highLiquidationPriceMultiplier,
+                        lowLiquidationPriceMultiplier,
+                    }),
+                ),
             );
             paymentDetails.set('payment_url', 'test.com/test');
 

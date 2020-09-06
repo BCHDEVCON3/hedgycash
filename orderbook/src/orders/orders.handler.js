@@ -36,7 +36,7 @@ module.exports.list = createHandler((event, context, callback) => {
 module.exports.createPaymentRequest = createHandler((event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false;
     ordersService
-        .createPaymentRequest()
+        .createPaymentRequest(event.queryStringParameters)
         .then((result) => {
             callback(null, { statusCode: 200, body: JSON.stringify(result) });
         })
