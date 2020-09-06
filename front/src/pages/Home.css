@@ -5,3 +5,27 @@
     word-wrap: break-word;
     hyphens: auto;
 }
+
+#home__col-name {
+    text-align: center;
+}
+
+.home__name {
+    margin-top: 70px;
+    width: 659px;
+    height: 250px;
+}
+
+@media only screen and (max-width: 600px) {
+    .home__name {
+        width: 395px;
+        height: 150px;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .home__name {
+        width: 263px;
+        height: 100px;
+    }
+}

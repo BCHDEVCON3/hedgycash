@@ -7,11 +7,17 @@ import {
     IonHeader,
     IonButtons,
     IonMenuButton,
+    IonButton,
 } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+
+import HedgyCashName from '../assets/hedgycash-name.png';
 
 import './Home.css';
 
 const Home: React.FC = () => {
+    const history = useHistory();
+
     return (
         <IonPage>
             <IonHeader>
@@ -43,6 +49,25 @@ const Home: React.FC = () => {
                             Powered by the unbiased AnyHedge protocol, you'll access a decentralized
                             hedge solution against arbitrary assets on the BCH network.
                         </p>
+                    </IonCol>
+                </IonRow>
+                <IonRow>
+                    <IonCol id="home__col-name" offset="1" size="10" offsetXs="1" sizeXs="10">
+                        <img className="home__name" src={HedgyCashName} alt="logo" />
+                    </IonCol>
+                </IonRow>
+                <IonRow>
+                    <IonCol
+                        style={{ textAlign: 'center' }}
+                        offsetMd="1"
+                        sizeMd="6"
+                        offsetXs="1"
+                        sizeXs="10"
+                    >
+                        <h1 className="home__title">Start investing now</h1>
+                        <IonButton color="success" onClick={() => history.push('/portfolio')}>
+                            Import wallet
+                        </IonButton>
                     </IonCol>
                 </IonRow>
             </IonContent>
