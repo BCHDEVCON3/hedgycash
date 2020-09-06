@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonMenuButton, IonButtons } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonMenuButton, IonButtons } from '@ionic/react';
 
 import { RootState } from '../../store';
 
@@ -13,12 +13,9 @@ const Portfolio: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonMenuButton></IonMenuButton>
-                    </IonButtons>
-                    <IonTitle>Portfolio</IonTitle>
-                </IonToolbar>
+                <IonButtons>
+                    <IonMenuButton color="success"></IonMenuButton>
+                </IonButtons>
             </IonHeader>
             <IonContent>
                 {address ? <PortfolioDetails address={address} /> : <PortfolioEmpty />}

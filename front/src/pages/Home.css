@@ -1,0 +1,35 @@
+.home__title {
+    margin-top: 70px;
+    font-size: 35px;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+#home__col-name {
+    text-align: center;
+}
+
+.home__name {
+    margin-top: 70px;
+    width: 659px;
+    height: 250px;
+}
+
+.home__invest-btn {
+    margin-bottom: 150px;
+}
+
+@media only screen and (max-width: 600px) {
+    .home__name {
+        width: 395px;
+        height: 150px;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .home__name {
+        width: 263px;
+        height: 100px;
+    }
+}

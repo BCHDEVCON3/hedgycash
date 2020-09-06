@@ -1,6 +1,7 @@
 import moment from 'moment';
+import { Oracle } from './constants';
 
-export const normalizeOracles = (oracles) =>
+export const normalizeOracles = (oracles): [Oracle] =>
     oracles &&
     oracles.map &&
     oracles.map((oracle) => {

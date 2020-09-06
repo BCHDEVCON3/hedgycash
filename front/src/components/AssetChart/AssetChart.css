@@ -1,20 +1,3 @@
-.icon-rotate {
-    animation-name: rotate-s-loader;
-    animation-iteration-count: infinite;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    position: relative;
-}
-
-@keyframes rotate-s-loader {
-    from {
-        transform: rotate(0);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 .asset-chart__card {
     text-align: center;
 }

@@ -15,7 +15,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { PAGES, Page } from '../../constants/constants';
 
 import HedgyCashLogoBlack from './assets/hedgycash-black.png';
-import HedgyCashName from './assets/hedgycash-name.png';
+import HedgyCashName from '../../assets/hedgycash-name.png';
 
 import './Menu.css';
 
