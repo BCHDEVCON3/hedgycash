@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const normalizeOracles = (oracles) =>
     oracles &&
     oracles.map &&
@@ -17,4 +19,5 @@ export const normalizeChartData = (chartData) =>
     chartData.map((point) => ({
         price: point.price,
         timestamp: point.timestamp,
+        timestampFormatted: moment.unix(point.timestamp).format('DD/MM/YYYY hh:mm'),
     }));
