@@ -68,4 +68,4 @@ functions:
   watch:
     handler: ./src/watcher/watcher.handler.watch
     events:
-      - schedule: rate(30 minutes)
+      - schedule: rate(5 minutes)

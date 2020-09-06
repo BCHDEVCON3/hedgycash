@@ -38,24 +38,38 @@ const OrderSchema = mongoose.Schema({
     hedge: {
         wif: String,
         address: String,
+        creator: String,
         amount: {
             type: Number,
             default: 0,
+        },
+        funded: {
+            type: Boolean,
+            default: false,
         },
     },
     long: {
         wif: String,
         address: String,
+        creator: String,
         amount: {
             type: Number,
             default: 0,
+        },
+        funded: {
+            type: Boolean,
+            default: false,
         },
     },
     oraclePubKey: {
         type: String,
         required: true,
     },
-    contractMetadata: {},
+    description: {
+        type: String,
+        required: true,
+    },
+    contractData: mongoose.Schema.Types.Mixed,
     startPrice: {
         type: Number,
         numberValidator,

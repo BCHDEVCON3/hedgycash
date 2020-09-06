@@ -119,5 +119,11 @@ module.exports = async function (hedge, long, contractData) {
     // Build the funding transaction.
     const fundingTransaction = fundingTransactionBuilder.build();
 
+    // Output the raw hex-encoded funding transaction to the console.
+    console.log(`Funding transaction: ${fundingTransaction.toHex()}`);
+
+    const txidStr = await bitbox.RawTransactions.sendRawTransaction([fundingTransaction.toHex()]);
+    console.info(`https://explorer.bitcoin.com/bch/tx/${txidStr}`);
+
     return fundingTransaction;
 };

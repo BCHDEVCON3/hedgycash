@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonSplitPane, IonPage } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSplitPane, IonPage, IonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 import Menu from './components/Menu/Menu';
@@ -53,6 +53,12 @@ const App: React.FC = () => (
                 </IonPage>
             </IonSplitPane>
         </IonReactRouter>
+        <IonAlert
+            isOpen={true}
+            header={'Warning'}
+            message={'This app is alpha version, you may lose your funds.'}
+            buttons={['OK']}
+        />
     </IonApp>
 );
 
