@@ -1,11 +1,9 @@
-
-
 #submitOrder {
     text-transform: none;
 }
 
-#orderCardContent {
-    padding-top: 30px;
+#orderCardContentSegment {
+    padding-bottom: 20px;
 }
 
 #orderCardTitle {

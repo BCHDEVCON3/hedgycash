@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonCard } from '@ionic/react';
+import { IonCard, useIonViewWillLeave } from '@ionic/react';
 import {
     LineChart,
     CartesianGrid,
@@ -38,12 +38,10 @@ const AssetChart = ({ oracle }) => {
         }
     }, [oracle]);
 
-    useEffect(() => {
-        return () => {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
+    useIonViewWillLeave(() => {
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
     });
 
     return (

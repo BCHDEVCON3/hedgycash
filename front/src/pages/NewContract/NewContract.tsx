@@ -17,6 +17,10 @@ import {
     IonButtons,
     IonMenuButton,
     IonToast,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    useIonViewDidEnter,
 } from '@ionic/react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,7 +34,13 @@ import { ordersApi } from '../../utils/axios';
 import './NewContract.css';
 
 const NewContract: React.FC = () => {
-    const initialOrderState = { maturity: '', multiplier: '' };
+    const initialOrderState = {
+        maturity: '',
+        highMultiplier: '',
+        lowMultiplier: '',
+        contractUnits: '',
+        strategy: 'long',
+    };
     const oracleState = { address: '', asset: '', pubKey: '' };
 
     const [asset, setAsset] = useState<string>();
@@ -71,33 +81,43 @@ const NewContract: React.FC = () => {
     // };
 
     const onSubmitOrder = () => {
-        const highLiquidationPriceMultiplier = 1 + Number(orderState.multiplier) / 100;
-        const lowLiquidationPriceMultiplier = 1 - Number(orderState.multiplier) / 100;
-        ordersApi
-            .post('/orders', {
-                oraclePubKey: selectedOracle.pubKey,
-                maturityModifier: Number(orderState.maturity),
-                highLiquidationPriceMultiplier,
-                lowLiquidationPriceMultiplier,
-            })
-            .then(() => {
-                setPostError(false);
-                setToastMsg('Contract created!');
-            })
-            .catch(() => {
-                setPostError(true);
-                setToastMsg('Contract failed!');
-            })
-            .finally(() => {
-                setOrderState(initialOrderState);
-            });
+        const high = Number(orderState.highMultiplier);
+        const low = Number(orderState.lowMultiplier);
+        if (high >= 1.2 && high <= 1.9 && low >= 0.1 && low <= 0.9) {
+            ordersApi
+                .post('/orders', {
+                    oraclePubKey: selectedOracle.pubKey,
+                    maturityModifier: Number(orderState.maturity),
+                    highLiquidationPriceMultiplier: Number(orderState.highMultiplier),
+                    lowLiquidationPriceMultiplier: Number(orderState.lowMultiplier),
+                    contractUnits: Number(orderState.contractUnits),
+                    isHedge: orderState.strategy === 'hedge',
+                })
+                .then(() => {
+                    setPostError(false);
+                    setToastMsg('Contract created!');
+                    setOrderState(initialOrderState);
+                })
+                .catch(() => {
+                    setPostError(true);
+                    setToastMsg('Contract failed!');
+                });
+        } else {
+            setPostError(true);
+            setToastMsg('Multipliers are out of bounds!');
+        }
     };
 
-    const isDisabled = () => !asset || !orderState.maturity || !orderState.multiplier;
+    const isDisabled = () =>
+        !asset ||
+        !orderState.maturity ||
+        !orderState.highMultiplier ||
+        !orderState.lowMultiplier ||
+        !orderState.contractUnits;
 
-    useEffect(() => {
+    useIonViewDidEnter(() => {
         dispatch(fetchOraclesInit());
-    }, [dispatch]);
+    });
 
     useEffect(() => {
         if (oracles && oracles.length) {
@@ -123,7 +143,28 @@ const NewContract: React.FC = () => {
                             <IonCardHeader>
                                 <IonCardTitle id="orderCardTitle">New Contract</IonCardTitle>
                             </IonCardHeader>
-                            <IonCardContent id="orderCardContent">
+                            <IonCardContent>
+                                <IonRow id="orderCardContentSegment">
+                                    <IonCol size="12">
+                                        <IonSegment
+                                            color="success"
+                                            value={orderState.strategy}
+                                            onIonChange={(e) =>
+                                                setOrderState((prev) => ({
+                                                    ...prev,
+                                                    strategy: e.detail.value!,
+                                                }))
+                                            }
+                                        >
+                                            <IonSegmentButton value="long">
+                                                <IonLabel>Long</IonLabel>
+                                            </IonSegmentButton>
+                                            <IonSegmentButton value="hedge">
+                                                <IonLabel>Short</IonLabel>
+                                            </IonSegmentButton>
+                                        </IonSegment>
+                                    </IonCol>
+                                </IonRow>
                                 <IonRow>
                                     <IonCol size="6">
                                         <IonText>
@@ -172,24 +213,67 @@ const NewContract: React.FC = () => {
                                     </IonCol>
                                 </IonRow>
                                 <IonRow>
-                                    <IonCol size="12">
+                                    <IonCol size="6">
                                         <IonText>
-                                            <h2>Price Variation (%)</h2>
-                                            <h5>Stop loss and gain</h5>
+                                            <h2>High Liquidation Price Multiplier</h2>
                                         </IonText>
                                         <IonInput
                                             onIonChange={(e) =>
                                                 setOrderState((prev) => ({
                                                     ...prev,
-                                                    multiplier: e.detail.value!,
+                                                    highMultiplier: e.detail.value!,
+                                                }))
+                                            }
+                                            type="number"
+                                            inputMode="decimal"
+                                            value={orderState.highMultiplier}
+                                            min="1.2"
+                                            max="1.9"
+                                            step="0.1"
+                                            placeholder="1.2"
+                                            required
+                                        />
+                                    </IonCol>
+                                    <IonCol size="6">
+                                        <IonText>
+                                            <h2>Low Liquidation Price Multiplier</h2>
+                                        </IonText>
+                                        <IonInput
+                                            onIonChange={(e) =>
+                                                setOrderState((prev) => ({
+                                                    ...prev,
+                                                    lowMultiplier: e.detail.value!,
                                                 }))
                                             }
                                             type="number"
                                             inputMode="numeric"
-                                            value={orderState.multiplier}
-                                            min="1"
-                                            max="99"
-                                            placeholder="1"
+                                            value={orderState.lowMultiplier}
+                                            min="0.1"
+                                            max="0.9"
+                                            step="0.1"
+                                            placeholder="0.1"
+                                            required
+                                        />
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol size="6">
+                                        <IonText>
+                                            <h2>Contract Units</h2>
+                                        </IonText>
+                                        <IonInput
+                                            onIonChange={(e) =>
+                                                setOrderState((prev) => ({
+                                                    ...prev,
+                                                    contractUnits: e.detail.value!,
+                                                }))
+                                            }
+                                            type="number"
+                                            inputMode="numeric"
+                                            value={orderState.contractUnits}
+                                            min="50"
+                                            max="100"
+                                            placeholder="50"
                                             required
                                         />
                                     </IonCol>

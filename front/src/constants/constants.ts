@@ -1,7 +1,7 @@
 // import Home from '../pages/Home';
 // import Portfolio from '../pages/Portfolio/Portfolio';
-import OrderBook from '../pages/Book';
-import History from '../pages/History';
+import OrderBook from '../pages/Book/Book';
+import History from '../pages/History/History';
 import NewContract from '../pages/NewContract/NewContract';
 
 export interface Page {
