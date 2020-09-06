@@ -16,6 +16,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { PAGES, Page } from '../../constants/constants';
 
 import HedgyCashLogoBlack from './assets/hedgycash-black.png';
+import HedgyCashName from './assets/hedgycash-name.png';
 
 import './Menu.css';
 
@@ -51,7 +52,13 @@ const Menu = ({ history, location }: Props) => {
         <IonMenu contentId="main">
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Hedgy.Cash</IonTitle>
+                    <img
+                        className="side-menu-header__name"
+                        src={HedgyCashName}
+                        alt="logo"
+                        width="211"
+                        height="80"
+                    />
                 </IonToolbar>
             </IonHeader>
             <IonContent className="side-menu-content" id="main">

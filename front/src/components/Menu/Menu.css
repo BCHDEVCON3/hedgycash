@@ -1,3 +1,8 @@
+.side-menu-header__name {
+    margin: 5px 0;
+    margin-left: calc(calc(100% - 211px) / 2);
+}
+
 .side-menu-content {
     position: relative;
 }
