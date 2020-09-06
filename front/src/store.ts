@@ -1,11 +1,13 @@
 import { compose, createStore, applyMiddleware, Action, Reducer } from 'redux';
 import { install, combineReducers } from 'redux-loop';
 import { walletReducer } from './Redux/Wallet';
+import { oraclesReducer } from './Redux/Oracles';
 import { composeWithDevTools } from 'redux-devtools-extension';
 const persistState = require('redux-sessionstorage');
 
 const rootReducer: Reducer<any, Action<any>> = combineReducers({
     walletState: walletReducer,
+    oraclesState: oraclesReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
