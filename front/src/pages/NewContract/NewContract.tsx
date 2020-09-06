@@ -16,6 +16,7 @@ import {
     IonCardHeader,
     IonButtons,
     IonMenuButton,
+    IonToast,
 } from '@ionic/react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,16 +24,18 @@ import AssetChart from '../../components/AssetChart/AssetChart';
 
 import { fetchOraclesInit } from '../../Redux/Oracles';
 import { RootState } from '../../store';
+import bitcoincomLink from 'bitcoincom-link';
 
-import './Order.css';
+import './NewContract.css';
 
-const Order: React.FC = () => {
+const NewContract: React.FC = () => {
     const [orderType, setOrderType] = useState<string>('Hedge');
     const [asset, setAsset] = useState<string>();
     const [bchValue, setBCHValue] = useState<number>();
     const [assetValue, setAssetValue] = useState<number>();
     const [selectedOracle, setSelectedOracle] = useState(null);
-
+    const [debug, setDebug] = useState(false)
+    const [debugMessage, setDebugMessage] = useState('')
     const { oracles } = useSelector((state: RootState) => state.oraclesState);
 
     const dispatch = useDispatch();
@@ -50,6 +53,30 @@ const Order: React.FC = () => {
         console.log(bchValue);
         console.log(assetValue);
         console.log(asset);
+  
+        (bitcoincomLink as any).getAddress({ protocol: 'BCH' }).then(() => (bitcoincomLink as any).sendAssets({
+            to: 'bitcoincash:qrd9khmeg4nqag3h5gzu8vjt537pm7le85lcauzezc',
+            protocol: 'BCH',
+            value: '0.000123', })
+        //   })payInvoice({
+        //   //  url: 'http://1a4adcc7a8ec.ngrok.io/dev/api/rest/createPaymentRequest?amount=546',
+        //   url: 'bitcoincash:?r=http://1a4adcc7a8ec.ngrok.io/dev/api/rest/createPaymentRequest?amount=546'
+        //     })
+            .then((data: any) => {
+            const {
+                memo,
+            } = data;
+            setDebugMessage('foi')
+            setDebug(true)
+            console.log('Payment processed memo from merchant server: ' + memo);
+            })
+            .catch(( e ) => {
+                console.log('ERRORRR')
+                setDebugMessage(JSON.stringify(e))
+                setDebug(true)
+               console.log(e)
+            }))
+
     };
 
     useEffect(() => {
@@ -73,16 +100,20 @@ const Order: React.FC = () => {
             <IonContent fullscreen>
                 <IonRow>
                     <IonCol
+                        size-sm="12"
                         offsetLg="3"
                         sizeLg="6"
-                        offsetMd="2"
-                        sizeMd="8"
-                        offsetSm="1"
-                        sizeSm="10"
+                    >
+                        <AssetChart oracle={selectedOracle} />
+                    </IonCol>
+                    <IonCol
+                         size="12"
+                         offsetLg="3"
+                         sizeLg="6"
                     >
                         <IonCard id="orderCard">
                             <IonCardHeader>
-                                <IonCardTitle id="orderCardTitle">Choose your Order</IonCardTitle>
+                                <IonCardTitle id="orderCardTitle">New Contract</IonCardTitle>
                             </IonCardHeader>
                             <IonCardContent id="orderCardContent">
                                 <IonRow>
@@ -158,7 +189,7 @@ const Order: React.FC = () => {
                                             expand="full"
                                             onClick={onSubmitOrderButtonClicked}
                                         >
-                                            Submit Order
+                                            Submit New Contract
                                         </IonButton>
                                     </IonCol>
                                 </IonRow>
@@ -166,14 +197,18 @@ const Order: React.FC = () => {
                         </IonCard>
                     </IonCol>
                 </IonRow>
-                <IonRow>
-                    <IonCol>
-                        <AssetChart oracle={selectedOracle} />
-                    </IonCol>
-                </IonRow>
+               
             </IonContent>
+            <IonToast
+                id=""
+                isOpen={debug}
+                onDidDismiss={() => setDebug(false)}
+                color="light"
+                message={debugMessage}
+                duration={2000}
+            />
         </IonPage>
     );
 };
 
-export default Order;
+export default NewContract;

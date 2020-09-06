@@ -9,7 +9,7 @@ import {
     IonMenuButton,
 } from '@ionic/react';
 
-const User: React.FC = () => {
+const History: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
@@ -20,7 +20,7 @@ const User: React.FC = () => {
             <IonContent fullscreen>
                 <IonHeader collapse="condense">
                     <IonToolbar>
-                        <IonTitle size="large">User</IonTitle>
+                        <IonTitle size="large">History</IonTitle>
                     </IonToolbar>
                 </IonHeader>
             </IonContent>
@@ -28,4 +28,4 @@ const User: React.FC = () => {
     );
 };
 
-export default User;
+export default History;
