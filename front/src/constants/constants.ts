@@ -1,6 +1,6 @@
 // import Home from '../pages/Home';
 // import Portfolio from '../pages/Portfolio/Portfolio';
-import OrderBook from '../pages/Book';
+import OrderBook from '../pages/Book/Book';
 import History from '../pages/History';
 import NewContract from '../pages/NewContract/NewContract';
 
