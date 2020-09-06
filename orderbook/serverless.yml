@@ -11,9 +11,15 @@ provider:
     LONG_WIF: ${file(./env.${self:provider.stage}.json):LONG_WIF}
     HEDGE_WIF: ${file(./env.${self:provider.stage}.json):HEDGE_WIF}
     STAGE: ${self:provider.stage}
+    PAYMENT_URL: ${file(./env.${self:provider.stage}.json):PAYMENT_URL}
+    ORACLE_PRICES_URL: ${file(./env.${self:provider.stage}.json):ORACLE_PRICES_URL}
 
 plugins:
   - serverless-offline
+
+custom:
+  serverless-offline:
+    host: 0.0.0.0
 
 functions:
   createOrder:

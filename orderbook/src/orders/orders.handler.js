@@ -38,7 +38,14 @@ module.exports.createPaymentRequest = createHandler((event, context, callback) =
     ordersService
         .createPaymentRequest(event.queryStringParameters)
         .then((result) => {
-            callback(null, { statusCode: 200, body: JSON.stringify(result) });
+            callback(null, {
+                statusCode: 200,
+                body: result.toString('base64'),
+                headers: {
+                    'Content-Type': 'application/bitcoincash-paymentrequest',
+                },
+                isBase64Encoded: true,
+            });
         })
         .catch((err) =>
             callback(null, {

@@ -155,7 +155,8 @@ class OraclesService {
                     const parsedMessage = OracleData.parsePriceMessage(priceMessage.message);
                     return parsedMessage;
                 })
-                .filter((price) => !!price),
+                .filter((price) => !!price)
+                .reverse(),
         );
     };
 }

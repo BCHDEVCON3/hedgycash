@@ -36,11 +36,17 @@ const OrderSchema = mongoose.Schema({
         required: true,
         numberValidator,
     },
-    hedgeAddress: {
-        type: String,
+    bchAmount: {
+        type: Number,
+        numberValidator,
     },
-    counterpartyAddress: {
-        type: String,
+    hedge: {
+        wif: String,
+        funded: Boolean,
+    },
+    long: {
+        wif: String,
+        funded: Boolean,
     },
     oraclePubKey: {
         type: String,
@@ -52,12 +58,10 @@ const OrderSchema = mongoose.Schema({
     contractMetadata: {},
     startPrice: {
         type: Number,
-        required: true,
         numberValidator,
     },
     startBlockHeight: {
         type: Number,
-        required: true,
         numberValidator,
     },
     maturityModifier: {
@@ -79,12 +83,22 @@ const OrderSchema = mongoose.Schema({
 
 OrderSchema.methods.toJSON = function () {
     var obj = this.toObject();
+    delete obj.hedge.wif;
+    delete obj.long.wif;
     return obj;
 };
 
 OrderSchema.methods.toString = function () {
     return JSON.stringify(this.toJSON());
 };
+
+OracleSchema.virtual('hedge.address').get(function () {
+    return bitbox.ECPair.toCashAddress(bitbox.ECPair.fromWIF(this.hedge.wif));
+});
+
+OracleSchema.virtual('long.address').get(function () {
+    return bitbox.ECPair.toCashAddress(bitbox.ECPair.fromWIF(this.long.wif));
+});
 
 module.exports = mongoose.models.Order || mongoose.model('Order', OrderSchema);
 
