@@ -159,6 +159,7 @@ const Order: React.FC = () => {
                                     <IonCol>
                                         <IonButton
                                             id="submitOrder"
+                                            color="success"
                                             expand="full"
                                             onClick={onSubmitOrderButtonClicked}
                                         >

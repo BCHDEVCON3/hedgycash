@@ -27,6 +27,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+document.body.classList.toggle('dark', true);
+
 const App: React.FC = () => (
     <IonApp>
         <IonReactRouter>

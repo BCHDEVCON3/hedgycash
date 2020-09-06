@@ -38,7 +38,7 @@ const PortfolioEmpty: React.FC = () => {
                     <IonCardContent id="portfolio-card-content">
                         <IonItem>
                             <IonLabel>Badger Wallet</IonLabel>
-                            <IonButton fill="outline" onClick={createWallet}>
+                            <IonButton color="success" fill="outline" onClick={createWallet}>
                                 Create
                             </IonButton>
                         </IonItem>
@@ -54,7 +54,11 @@ const PortfolioEmpty: React.FC = () => {
                     <IonCardContent id="portfolio-card-content">
                         <IonItem>
                             <IonLabel>Badger Wallet</IonLabel>
-                            <IonButton fill="outline" onClick={() => dispatch(getAddressInit())}>
+                            <IonButton
+                                color="success"
+                                fill="outline"
+                                onClick={() => dispatch(getAddressInit())}
+                            >
                                 Import
                             </IonButton>
                         </IonItem>

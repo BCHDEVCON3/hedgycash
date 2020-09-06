@@ -34,7 +34,7 @@ const Menu = ({ history, location }: Props) => {
     const renderMenuItems = (): JSX.Element[] => {
         return PAGES.map((page: Page) => (
             <IonMenuToggle key={page.title} auto-hide="false">
-                <IonItem color={page.title === activePage ? 'primary' : ''}>
+                <IonItem color={page.title === activePage ? 'success' : ''}>
                     <IonButton fill="clear" expand="full" onClick={() => navigateToPage(page)}>
                         <IonLabel color="dark">{page.title}</IonLabel>
                     </IonButton>

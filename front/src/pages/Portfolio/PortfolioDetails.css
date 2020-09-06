@@ -14,3 +14,7 @@ ion-toast#portfolio-details-toast {
 .portfolio-details__qr-code {
     cursor: pointer;
 }
+
+.portfolio-details__copy-code {
+    color: var(--ion-color-success);
+}

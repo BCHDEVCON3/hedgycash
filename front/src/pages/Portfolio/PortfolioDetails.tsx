@@ -52,7 +52,7 @@ const PortfolioDetails: React.FC<PortfolioDetailsInterface> = ({ address }) => {
                         />
                         <IonChip onClick={handleCopy}>
                             <IonLabel>{address}</IonLabel>
-                            <IonIcon icon={copy} />
+                            <IonIcon className="portfolio-details__copy-code" icon={copy} />
                         </IonChip>
                     </IonCardContent>
                 </IonCard>

@@ -54,7 +54,7 @@ const AssetChart = ({ oracle }) => {
                 <ResponsiveContainer width="90%" height={300}>
                     <LineChart
                         width={600}
-                        height={300}
+                        height={400}
                         data={chartData}
                         margin={{ top: 20, bottom: 20 }}
                     >
@@ -63,7 +63,7 @@ const AssetChart = ({ oracle }) => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line type="monotone" dataKey="price" stroke="#8884d8" />
+                        <Line type="monotone" dataKey="price" stroke="#22cb78" />
                     </LineChart>
                 </ResponsiveContainer>
             )}
