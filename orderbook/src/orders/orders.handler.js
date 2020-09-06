@@ -11,26 +11,61 @@ const createHandler = (func) => middy(func).use(httpErrorHandler()).use(cors());
 module.exports.create = createHandler((event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false;
     ordersService
-        .create(event.body)
+        .create(JSON.parse(event.body))
         .then((result) => {
             callback(null, { statusCode: 200, body: JSON.stringify(result) });
         })
         .catch((err) =>
             callback(null, {
                 statusCode: err.statusCode || 500,
-                body: JSON.stringify(err),
+                body: JSON.stringify(err.message),
             }),
         );
 });
 
-module.exports.fund = createHandler((event, context, callback) => {
+module.exports.confirmPaymentMock = createHandler((event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false;
-    callback(null, { statusCode: 200, body: 'Hello!' });
+    ordersService
+        .confirmPaymentMock(JSON.parse(event.body))
+        .then((result) => {
+            callback(null, { statusCode: 200, body: JSON.stringify(result) });
+        })
+        .catch((err) =>
+            callback(null, {
+                statusCode: err.statusCode || 500,
+                body: JSON.stringify(err.message),
+            }),
+        );
+});
+
+module.exports.confirmPayment = createHandler((event, context, callback) => {
+    context.callbackWaitsForEmptyEventLoop = false;
+    ordersService
+        .confirmPayment(JSON.parse(event.body))
+        .then((result) => {
+            callback(null, { statusCode: 200, body: JSON.stringify(result) });
+        })
+        .catch((err) =>
+            callback(null, {
+                statusCode: err.statusCode || 500,
+                body: JSON.stringify(err.message),
+            }),
+        );
 });
 
 module.exports.list = createHandler((event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false;
-    callback(null, { statusCode: 200, body: 'Hello!' });
+    ordersService
+        .list()
+        .then((result) => {
+            callback(null, { statusCode: 200, body: JSON.stringify(result) });
+        })
+        .catch((err) =>
+            callback(null, {
+                statusCode: err.statusCode || 500,
+                body: JSON.stringify(err.message),
+            }),
+        );
 });
 
 module.exports.createPaymentRequest = createHandler((event, context, callback) => {

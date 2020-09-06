@@ -1,259 +1,214 @@
+const AnyHedgeLibrary = require('@generalprotocols/anyhedge');
 const validator = require('validator');
+const Big = require('big.js');
 const axios = require('axios');
 const vm = require('vm');
 const BITBOX = require('bitbox-sdk').BITBOX;
-const { TransactionBuilder, Transaction } = require('bitcoincashjs-lib');
 const bitcore = require('bitcore-lib-cash');
-const PaymentProtocol = require('bitcore-payment-protocol');
 const Order = require('./orders.repository');
+const fundContract = require('./utils/fund-contract');
 
 const bitbox = new BITBOX();
+const anyHedgeManager = new AnyHedgeLibrary();
 
 class orderService {
-    create = async (rawPayment) => {
+    create = async ({
+        oraclePubKey,
+        maturityModifier,
+        highLiquidationPriceMultiplier,
+        lowLiquidationPriceMultiplier,
+    } = {}) => {
         try {
-            const payment = PaymentProtocol.Payment.decodeHex(rawPayment);
-            // const merchantData = JSON.parse(payment.merchant_data.buffer.toString());
-            const merchantData = {
-                amount: 0.0001,
-                hedge: true,
-                oraclePubKey: '028331ef89be9bc970c170998474385163cf68dfc0e69c865db2ecf79cec70d487',
-                maturityModifier: 3,
-                highLiquidationPriceMultiplier: 0.01,
-                lowLiquidationPriceMultiplier: 1.01,
-            };
+            const hedgePk = new bitcore.PrivateKey();
+            const longPk = new bitcore.PrivateKey();
+            // const fakeHedgePk = new bitcore.PrivateKey();
+            // const fakeLongPk = new bitcore.PrivateKey();
 
-            const order = new Order({ ...merchantData });
+            // const { data: prices } = await axios.get(
+            //     `${process.env.ORACLE_PRICES_URL}/pubKey/${oraclePubKey}/prices`,
+            // );
+            // const currentPrice = prices[0].price;
+            // const blockHeight = prices[0].blockHeight;
+
+            // const contractParameters = [
+            //     oraclePubKey,
+            //     fakeHedgePk.toPublicKey().toString(), // just for fee calculation
+            //     fakeLongPk.toPublicKey().toString(), // just for fee calculation
+            //     contractUnits,
+            //     currentPrice,
+            //     blockHeight,
+            //     0,
+            //     maturityModifier,
+            //     highLiquidationPriceMultiplier,
+            //     lowLiquidationPriceMultiplier,
+            // ];
+            // const contractData = await anyHedgeManager.register(...contractParameters);
+
+            // const hedgeContractAmount = contractData.metadata.hedgeInputSats;
+            // const longContractAmount =
+            //     contractData.metadata.longInputSats +
+            //     contractData.metadata.minerCost +
+            //     contractData.metadata.dustCost;
+            // const hedgeFee = 950;
+            // const longFee = 950;
+            // const hedgeSendAmount = hedgeContractAmount + hedgeFee;
+            // const longSendAmount = longContractAmount + longFee;
+
+            const order = new Order({
+                oraclePubKey,
+                maturityModifier,
+                highLiquidationPriceMultiplier,
+                lowLiquidationPriceMultiplier,
+                hedge: {
+                    wif: hedgePk.toWIF().toString(),
+                    address: hedgePk.toAddress().toString(),
+                    // amount: hedgeSendAmount,
+                },
+                long: {
+                    wif: longPk.toWIF().toString(),
+                    address: longPk.toAddress().toString(),
+                    // amount: longSendAmount,
+                },
+            });
             const errors = order.validateSync();
             if (errors) {
                 throw new Error(errors.message);
             }
 
-            const incomingTransaction = Transaction.fromHex(
-                payment.transactions[0].toString('hex'),
-            );
-
-            // const transactionId = await bitbox.RawTransactions.sendRawTransaction(
-            //     payment.transactions[0].toString('hex'),
-            // );
-
-            // await order.save();
-
-            console.info(
-                bitbox.Script.fromASM(Buffer.from(incomingTransaction.ins[0].script, 'hex')),
-            );
-
-            const memo = `Transaction Broadcasted: https://explorer.bitcoin.com/bch/tx/${transactionId}`;
-            const paymentAck = paymentProtocol.makePaymentACK({ payment, memo }, 'BCH');
-            return paymentAck;
+            return order.save();
         } catch (err) {
+            console.error(err.stack, err.message);
             return Promise.reject({
                 statusCode: 400,
-                message: 'Invalid payment protocol object. Cause: ' + (err.error || err.message),
+                message: 'Invalid order parameters. Root cause: ' + (err.error || err.message),
             });
         }
     };
 
-    fund = async (rawPayment) => {
+    confirmPaymentMock = async ({ id, address }) => {
         try {
-            const payment = PaymentProtocol.Payment.decodeHex(rawPayment);
-            const merchantData = JSON.parse(payment.merchant_data.buffer.toString());
+            const order = await Order.findById(id);
 
-            const order = new Order({ ...merchantData });
-            const errors = oracle.validateSync();
-            if (errors) {
-                throw new Error(errors.message);
+            if (!order) {
+                return Promise.reject({
+                    statusCode: 400,
+                    message: 'Invalid order id',
+                });
             }
 
-            const transactionId = await bitbox.RawTransactions.sendRawTransaction(
-                payment.transactions[0].toString('hex'),
-            );
+            const orderJSON = order.toJSON();
+            const isHedge = orderJSON.hedge.address === address;
+            const self = isHedge ? order.hedge : order.long;
+            const counterParty = !isHedge ? order.hedge : order.long;
 
-            await order.save();
+            self.amount = 1000;
+            order.amount = order.amount || self.amount;
 
-            const memo = `Transaction Broadcasted: https://explorer.bitcoin.com/bch/tx/${transactionId}`;
-            const paymentAck = paymentProtocol.makePaymentACK({ payment, memo }, 'BCH');
-            return paymentAck;
+            if (self.amount && counterParty.amount) {
+                order.state = Order.OrderState.FULFILLED;
+            }
+
+            return order.save();
         } catch (err) {
+            console.error(err.stack, err.message);
             return Promise.reject({
                 statusCode: 400,
-                message: 'Invalid payment protocol object. Cause: ' + (err.error || err.message),
+                message: 'Invalid order parameters. Root cause: ' + (err.error || err.message),
             });
         }
     };
 
-    createPaymentRequest = async ({
-        amount,
-        hedge = true,
-        oraclePubKey,
-        maturityModifier,
-        highLiquidationPriceMultiplier,
-        lowLiquidationPriceMultiplier,
-    } = {}) => {
+    confirmPayment = async ({ id, address }) => {
         try {
-            const ecpair = bitbox.ECPair.fromWIF(
-                hedge ? process.env.HEDGE_WIF : process.env.LONG_WIF,
+            const order = await Order.findById(id);
+
+            if (!order) {
+                return Promise.reject({
+                    statusCode: 400,
+                    message: 'Invalid order id',
+                });
+            }
+
+            const orderJSON = order.toJSON();
+            const isHedge = orderJSON.hedge.address === address;
+            const self = isHedge ? order.hedge : order.long;
+            const counterParty = !isHedge ? order.hedge : order.long;
+
+            const details = await bitbox.Address.details(address);
+            const balance = details.unconfirmedBalanceSat + details.balanceSat;
+            self.amount = balance;
+            order.amount = order.amount || balance;
+
+            const { data: prices } = await axios.get(
+                `${process.env.ORACLE_PRICES_URL}/pubKey/${order.oraclePubKey}/prices`,
             );
-            const ouputAddr = bitbox.ECPair.toLegacyAddress(ecpair);
+            prices.reverse();
+            const currentPrice = prices[0].price;
+            const blockHeight = prices[0].blockHeight;
+            // const contractUnits = Number(new Big(order.amount).div(currentPriceSat).toFixed(0));
+            const contractUnits = 60; // TODO: refactor this shit!
 
-            const satoshisAmount = Number(Number(amount).toFixed(0));
+            const minimumSatoshiAmount = parseInt((50 * currentPrice) / 10 ** 4);
 
-            const txBuilder = new TransactionBuilder();
-            txBuilder.addOutput(ouputAddr, satoshisAmount);
-            const outputs = new PaymentProtocol('BCH').makeOutput();
-            outputs.set('amount', satoshisAmount);
-            outputs.set('script', Buffer.from(txBuilder.buildIncomplete().outs[0].script));
-            // outputs.set('refund_to', outputs.message)
-            const paymentDetails = new PaymentProtocol().makePaymentDetails();
-            paymentDetails.set('outputs', outputs.message);
-            paymentDetails.set('time', 0);
-            paymentDetails.set(
-                'merchant_data',
-                Buffer.from(
-                    JSON.stringify({
-                        amount,
-                        hedge,
-                        oraclePubKey,
-                        maturityModifier,
-                        highLiquidationPriceMultiplier,
-                        lowLiquidationPriceMultiplier,
-                    }),
-                ),
-            );
-            paymentDetails.set(
-                'payment_url',
-                process.env.IS_OFFLINE
-                    ? 'http://1a4adcc7a8ec.ngrok.io/dev/api/rest/orders'
-                    : process.env.PAYMENT_URL,
-            );
+            if (order.amount < minimumSatoshiAmount) {
+                return Promise.reject({
+                    statusCode: 400,
+                    message: `This order requires at least ${minimumSatoshiAmount} satoshis`,
+                });
+            }
 
-            const paymentRequest = new PaymentProtocol().makePaymentRequest();
+            if (self.amount && counterParty.amount) {
+                if (contractUnits < 50) {
+                    return Promise.reject({
+                        statusCode: 400,
+                        message: `Insufficient amount. The minimum amount for the current price of ${
+                            currentPrice / 10 ** 8
+                        } is ${minimumSatoshiAmount}`,
+                    });
+                }
 
-            paymentRequest.set('serialized_payment_details', paymentDetails.serialize());
-            // paymentRequest.set('pki_type', 'x509+sha256');
-            paymentRequest.set('pki_type', 'none');
-            const certificates = new PaymentProtocol().makeX509Certificates();
-            // paymentRequest.set('pki_data', certificates.message);
-            paymentRequest.hex = paymentRequest.serialize().toString('hex');
-            return paymentRequest.serialize();
+                const contractParameters = [
+                    Buffer.from(order.oraclePubKey, 'hex'),
+                    new bitcore.PrivateKey(order.hedge.wif).toPublicKey().toBuffer(),
+                    new bitcore.PrivateKey(order.long.wif).toPublicKey().toBuffer(),
+                    contractUnits,
+                    currentPrice,
+                    blockHeight,
+                    0,
+                    order.maturityModifier,
+                    order.highLiquidationPriceMultiplier,
+                    order.lowLiquidationPriceMultiplier,
+                ];
+                await anyHedgeManager.load();
+                const contractData = await anyHedgeManager.register(...contractParameters);
+                order.startBlockHeight = blockHeight;
+                order.startPrice = currentPrice;
+                order.contractUnits = contractUnits;
+                order.state = Order.OrderState.FULFILLED;
+                order.contractData = contractData;
+                await fundContract(order.hedge, order.long, contractData);
+            }
+
+            return order.save();
+        } catch (err) {
+            console.error(err.stack, err.message);
+            return Promise.reject({
+                statusCode: 400,
+                message: 'Invalid order parameters. Root cause: ' + (err.error || err.message),
+            });
+        }
+    };
+
+    list = () => {
+        try {
+            return Order.find();
         } catch (err) {
             console.error(err.stack, err.message);
             return Promise.reject({
                 statusCode: 500,
-                message: err.error || err.message,
+                message: 'Cannot find orders. Root cause: ' + (err.error || err.message),
             });
         }
-    };
-
-    createPaymentRequestForFund = async ({
-        amount,
-        hedge = true,
-        oraclePubKey,
-        maturityModifier,
-        highLiquidationPriceMultiplier,
-        lowLiquidationPriceMultiplier,
-    } = {}) => {
-        try {
-            const ecpair = bitbox.ECPair.fromWIF(
-                hedge ? process.env.HEDGE_WIF : process.env.LONG_WIF,
-            );
-            const ouputAddr = bitbox.ECPair.toLegacyAddress(ecpair);
-            const pubKey = bitbox.ECPair.toPublicKey(ecpair);
-            const satoshisAmount = Number(Number(amount).toFixed(0));
-
-            const prices = await axios.get(`${process.env.ORACLE_PRICES_URL}/${oraclePubKey}`);
-            const currentPrice = prices[0].currentPrice;
-            const blockHeight = prices[0].blockHeight;
-
-            const contractParameters = [
-                oraclePubKey,
-                pubKey,
-                pubKey,
-                amount,
-                currentPrice,
-                blockHeight,
-                0,
-                maturityModifier,
-                highLiquidationPriceMultiplier,
-                lowLiquidationPriceMultiplier,
-            ];
-            const contractData = await AnyHedgeLibrary.register(...contractParameters);
-
-            const txBuilder = new TransactionBuilder();
-            txBuilder.addOutput(ouputAddr, satoshisAmount);
-            const outputs = new PaymentProtocol('BCH').makeOutput();
-            outputs.set('amount', satoshisAmount);
-            outputs.set('script', Buffer.from(txBuilder.buildIncomplete().outs[0].script));
-            // outputs.set('refund_to', outputs.message)
-            const paymentDetails = new PaymentProtocol().makePaymentDetails();
-            paymentDetails.set('outputs', outputs.message);
-            paymentDetails.set('time', 0);
-            paymentDetails.set(
-                'merchant_data',
-                Buffer.from(
-                    JSON.stringify({
-                        amount,
-                        hedge,
-                        oraclePubKey,
-                        maturityModifier,
-                        highLiquidationPriceMultiplier,
-                        lowLiquidationPriceMultiplier,
-                    }),
-                ),
-            );
-            paymentDetails.set(
-                'payment_url',
-                process.env.IS_OFFLINE
-                    ? 'http://1a4adcc7a8ec.ngrok.io/dev/api/rest/orders'
-                    : process.env.PAYMENT_URL,
-            );
-
-            const paymentRequest = new PaymentProtocol().makePaymentRequest();
-
-            paymentRequest.set('serialized_payment_details', paymentDetails.serialize());
-            paymentRequest.hex = paymentRequest.serialize().toString('hex');
-            return paymentRequest.serialize();
-        } catch (err) {
-            return Promise.reject({
-                statusCode: 500,
-                message: err.error || err.message,
-            });
-        }
-    };
-
-    alternativeCreate = async ({
-        amount,
-        oraclePubKey,
-        maturityModifier,
-        highLiquidationPriceMultiplier,
-        lowLiquidationPriceMultiplier,
-    } = {}) => {
-        const hedgePk = new bitcore.PrivateKey();
-        const longPk = new bitcore.PrivateKey();
-
-        const order = new Order({
-            amount,
-            oraclePubKey,
-            maturityModifier,
-            highLiquidationPriceMultiplier,
-            lowLiquidationPriceMultiplier,
-            hedge: {
-                wif: hedgePk,
-            },
-            long: {
-                wif: longPk,
-            },
-        });
-        const errors = order.validateSync();
-        if (errors) {
-            throw new Error(errors.message);
-        }
-
-        return order.save();
-    };
-
-    list = () => {
-        return Order.find();
     };
 }
 

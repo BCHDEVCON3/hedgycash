@@ -31,29 +31,29 @@ const OrderSchema = mongoose.Schema({
             },
         },
     },
-    amount: {
-        type: Number,
-        required: true,
-        numberValidator,
-    },
-    bchAmount: {
+    contractUnits: {
         type: Number,
         numberValidator,
     },
     hedge: {
         wif: String,
-        funded: Boolean,
+        address: String,
+        amount: {
+            type: Number,
+            default: 0,
+        },
     },
     long: {
         wif: String,
-        funded: Boolean,
+        address: String,
+        amount: {
+            type: Number,
+            default: 0,
+        },
     },
     oraclePubKey: {
         type: String,
         required: true,
-    },
-    contractAddress: {
-        type: String,
     },
     contractMetadata: {},
     startPrice: {
@@ -84,6 +84,7 @@ const OrderSchema = mongoose.Schema({
 OrderSchema.methods.toJSON = function () {
     var obj = this.toObject();
     delete obj.hedge.wif;
+
     delete obj.long.wif;
     return obj;
 };
@@ -92,13 +93,14 @@ OrderSchema.methods.toString = function () {
     return JSON.stringify(this.toJSON());
 };
 
-OracleSchema.virtual('hedge.address').get(function () {
-    return bitbox.ECPair.toCashAddress(bitbox.ECPair.fromWIF(this.hedge.wif));
-});
+// Nested virtuals - Not working
+// OrderSchema.virtual('hedge.address').get(function () {
+//     return bitbox.ECPair.toCashAddress(bitbox.ECPair.fromWIF(this.hedge.wif));
+// });
 
-OracleSchema.virtual('long.address').get(function () {
-    return bitbox.ECPair.toCashAddress(bitbox.ECPair.fromWIF(this.long.wif));
-});
+// OrderSchema.virtual('long.address').get(function () {
+//     return bitbox.ECPair.toCashAddress(bitbox.ECPair.fromWIF(this.long.wif));
+// });
 
 module.exports = mongoose.models.Order || mongoose.model('Order', OrderSchema);
 

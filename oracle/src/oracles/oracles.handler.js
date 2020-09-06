@@ -100,12 +100,13 @@ module.exports.publishPrice = (event, context, callback) => {
     oraclesService
         .publishPrice(event)
         .then((result) => callback(null, { statusCode: 200, body: JSON.stringify(result) }))
-        .catch((err) =>
-            callback(null, {
+        .catch((err) => {
+            console.error(err.stack, err.message);
+            callback(err, {
                 statusCode: err.statusCode || 500,
                 body: JSON.stringify(err.stack || err.message),
-            }),
-        );
+            });
+        });
 };
 
 module.exports.getOraclePrices = createHandler((event, context, callback) => {

@@ -29,6 +29,27 @@ functions:
           path: api/rest/orders
           method: post
           cors: true
+  listOrders:
+      handler: ./src/orders/orders.handler.list
+      events:
+        - http:
+            path: api/rest/orders
+            method: get
+            cors: true
+  confirmPayment:
+      handler: ./src/orders/orders.handler.confirmPayment
+      events:
+        - http:
+            path: api/rest/orders/confirmPayment
+            method: post
+            cors: true
+  confirmPaymentMock:
+    handler: ./src/orders/orders.handler.confirmPaymentMock
+    events:
+      - http:
+          path: api/rest/orders/confirmPaymentMock
+          method: post
+          cors: true
   createPaymentRequest:
       handler: ./src/orders/orders.handler.createPaymentRequest
       events:

@@ -71,6 +71,15 @@ const OracleSchema = mongoose.Schema(
         },
       },
     },
+    multiplier: {
+      type: Number,
+      required: true,
+      validate: {
+        validator(multiplier) {
+          return validator.isNumeric(`${multiplier}`);
+        },
+      },
+    },
   },
   { toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
