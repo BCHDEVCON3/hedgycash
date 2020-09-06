@@ -17,7 +17,7 @@ export const normalizeChartData = (chartData) =>
     chartData &&
     chartData.map &&
     chartData.map((point) => ({
-        price: point.price,
+        price: point.price / 1000, // Comes in asset description
         timestamp: point.timestamp,
         timestampFormatted: moment.unix(point.timestamp).format('DD/MM/YYYY hh:mm'),
     }));

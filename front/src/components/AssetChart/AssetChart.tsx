@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { IonCard } from '@ionic/react';
-import { LineChart, CartesianGrid, XAxis, YAxis, Legend, Tooltip, Line } from 'recharts';
+import {
+    LineChart,
+    CartesianGrid,
+    XAxis,
+    YAxis,
+    Legend,
+    Tooltip,
+    Line,
+    ResponsiveContainer,
+} from 'recharts';
 
 import Loading from '../Loading/Loading';
 
@@ -42,20 +51,21 @@ const AssetChart = ({ oracle }) => {
             {loading || !chartData ? (
                 <Loading />
             ) : (
-                <LineChart
-                    className="asset-chart__chart"
-                    width={600}
-                    height={300}
-                    data={chartData}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="timestampFormatted" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="price" stroke="#8884d8" />
-                </LineChart>
+                <ResponsiveContainer width="90%" height={300}>
+                    <LineChart
+                        width={600}
+                        height={300}
+                        data={chartData}
+                        margin={{ top: 20, bottom: 20 }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="timestampFormatted" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="price" stroke="#8884d8" />
+                    </LineChart>
+                </ResponsiveContainer>
             )}
         </IonCard>
     );
