@@ -10,8 +10,10 @@ import {
     IonSegment,
     IonSegmentButton,
     IonLabel,
+    
 } from '@ionic/react';
-
+import { ordersApi } from '../../utils/axios';
+import bitcoincomLink from 'bitcoincom-link'
 import './Contract.css';
 
 interface ContractInterface {
@@ -19,8 +21,37 @@ interface ContractInterface {
 }
 
 const Contract: React.FC<ContractInterface> = ({ contract }) => {
-    const [strategy, setStrategy] = useState('long');
+    const [strategy, setStrategy] = useState(contract.hedge.creator ? 'hedge' : 'long');
+    
+    const onSubmitOrder = () => {
+        (bitcoincomLink as any).getAddress({ protocol: 'BCH' }).then(({ address }) => {
+             (bitcoincomLink as any).sendAssets({
+                                to: strategy === 'hedge' ? contract.long.address : contract.hedge.address,
+                                protocol: 'BCH',
+                                value: strategy === 'hedge' ? Number(contract.long.amount/10 ** 8).toFixed(8) : Number(contract.hedge.amount/10 ** 8).toFixed(8)
+                            })
+                            .then((data: any) => {
+                                console.log(data)
+                                ordersApi.post('/orders/confirmPayment', {
+                                    address: strategy === 'hedge' ? contract.long.address : contract.hedge.address,
+                                    id: contract.id
+                                    
+                                })
+                                .then((response : any) => {
+                                    console.log('Sent!', response);
+                                 
+                               
+                            })
+                        })
+            
+            })
+            .catch(() => {
+                // setPostError(true);
+                // setToastMsg('Contract failed!');
+            })
+    };
 
+    console.log(contract)
     return (
         <IonCard id="orderCard">
             <IonCardHeader>
@@ -29,12 +60,6 @@ const Contract: React.FC<ContractInterface> = ({ contract }) => {
                     value={strategy}
                     onIonChange={(e) => setStrategy(e.detail.value!)}
                 >
-                    <IonSegmentButton value="long">
-                        <IonLabel>Long</IonLabel>
-                    </IonSegmentButton>
-                    <IonSegmentButton value="hedge">
-                        <IonLabel>Short</IonLabel>
-                    </IonSegmentButton>
                 </IonSegment>
             </IonCardHeader>
             <IonCardContent id="orderCardContent">
@@ -76,8 +101,8 @@ const Contract: React.FC<ContractInterface> = ({ contract }) => {
                 </IonRow>
                 <IonRow>
                     <IonCol>
-                        <IonButton className="contract__button" color="success" expand="full">
-                            {strategy === 'long' ? 'Long' : 'Short'}
+                        <IonButton onClick={onSubmitOrder} className="contract__button" color="success" expand="full">
+                            {strategy === 'long' ? 'Hedge' : 'Long'}
                         </IonButton>
                     </IonCol>
                 </IonRow>

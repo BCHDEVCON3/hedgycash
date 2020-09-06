@@ -29,6 +29,7 @@ import { fetchOraclesInit, Oracle } from '../../Redux/Oracles';
 import { RootState } from '../../store';
 // import bitcoincomLink from 'bitcoincom-link';
 import { ordersApi } from '../../utils/axios';
+import bitcoincomLink from 'bitcoincom-link'
 
 import './NewContract.css';
 
@@ -80,6 +81,7 @@ const NewContract: React.FC = () => {
     // };
 
     const onSubmitOrder = () => {
+        (bitcoincomLink as any).getAddress({ protocol: 'BCH' }).then(({ address }) => {
         ordersApi
             .post('/orders', {
                 oraclePubKey: selectedOracle.pubKey,
@@ -88,16 +90,30 @@ const NewContract: React.FC = () => {
                 lowLiquidationPriceMultiplier: Number(orderState.lowMultiplier),
                 contractUnits: Number(orderState.contractUnits),
                 isHedge: orderState.strategy === 'hedge',
+                address
+                
             })
-            .then(() => {
-                setPostError(false);
-                setToastMsg('Contract created!');
-                setOrderState(initialOrderState);
+            .then((response : any) => {
+                console.log('response fsss', response);
+                (bitcoincomLink as any).sendAssets({
+                                to: orderState.strategy === 'hedge' ? response.data.hedge.address : response.data.long.address,
+                                protocol: 'BCH',
+                                value: orderState.strategy === 'hedge' ? Number(response.data.hedge.amount/10 ** 8).toFixed(8) : Number(response.data.long.amount/10 ** 8).toFixed(8)
+                            })
+                            .then((data: any) => {
+                                console.log(data)
+                                setPostError(false);
+                                setToastMsg('Contract created!');
+                                setOrderState(initialOrderState);
+                               
+                            })
+            
             })
             .catch(() => {
                 setPostError(true);
                 setToastMsg('Contract failed!');
-            });
+            })
+        })
     };
 
     const isDisabled = () =>
@@ -152,7 +168,7 @@ const NewContract: React.FC = () => {
                                                 <IonLabel>Long</IonLabel>
                                             </IonSegmentButton>
                                             <IonSegmentButton value="hedge">
-                                                <IonLabel>Short</IonLabel>
+                                                <IonLabel>Hedge</IonLabel>
                                             </IonSegmentButton>
                                         </IonSegment>
                                     </IonCol>
