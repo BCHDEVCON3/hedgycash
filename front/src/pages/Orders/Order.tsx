@@ -3,8 +3,6 @@ import {
     IonContent,
     IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar,
     IonCard,
     IonCol,
     IonRow,
@@ -68,12 +66,9 @@ const Order: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonMenuButton></IonMenuButton>
-                    </IonButtons>
-                    <IonTitle>Order</IonTitle>
-                </IonToolbar>
+                <IonButtons>
+                    <IonMenuButton color="success"></IonMenuButton>
+                </IonButtons>
             </IonHeader>
             <IonContent fullscreen>
                 <IonRow>

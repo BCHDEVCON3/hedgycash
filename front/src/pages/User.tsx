@@ -1,16 +1,21 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButtons, IonMenuButton } from '@ionic/react';
+import {
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonButtons,
+    IonMenuButton,
+} from '@ionic/react';
 
 const User: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonMenuButton></IonMenuButton>
-                    </IonButtons>
-                    <IonTitle>User</IonTitle>
-                </IonToolbar>
+                <IonButtons>
+                    <IonMenuButton color="success"></IonMenuButton>
+                </IonButtons>
             </IonHeader>
             <IonContent fullscreen>
                 <IonHeader collapse="condense">
