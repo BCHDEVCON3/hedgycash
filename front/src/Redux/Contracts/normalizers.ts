@@ -10,4 +10,5 @@ export const normalizeContracts = (contracts) =>
         maturity: contract.maturityModifier,
         oraclePubKey: contract.oraclePubKey,
         description: contract.description,
+        state: contract.state,
     }));
